@@ -1,0 +1,25 @@
+{
+  "name": "expense_manager",
+  "version": "1.0.0",
+  "description": "Private expense manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naprirfan/expense_manager.git"
+  },
+  "author": "Muhammad Irfan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naprirfan/expense_manager/issues"
+  },
+  "homepage": "https://github.com/naprirfan/expense_manager#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "node-telegram-bot-api": "^0.30.0",
+    "sqlite3": "^3.1.13"
+  }
+}
