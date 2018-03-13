@@ -26,13 +26,27 @@ app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) =>
 })
 
 bot.on('message', msg => {
-  if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
+  // if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
 
   if (msg.text === '/help' || msg.text === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)
   }
-  else if (msg.startsWith('/expense')) {
-    bot.sendMessage(msg.chat.id, "processing expense...")
+  else if (msg.text.startsWith('/expense')) {
+    var option = {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "ReplyKeyboardMarkup": {
+                    "keyboard": [
+                        ['BCA'],
+                        ['Commbank']
+                    ]
+                }
+            }
+        };
+    bot.sendMessage(msg.chat.id, "processing expense...", option)
+  }
+  else if (msg.text.startsWith('/income')) {
+    bot.sendMessage(msg.chat.id, "processing income...")
   }
   else {
     bot.sendMessage(msg.chat.id, JSON.stringify(msg))
