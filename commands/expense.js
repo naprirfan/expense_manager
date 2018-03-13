@@ -26,10 +26,19 @@ module.exports = {
         db.all("SELECT * FROM account", function(err, all) {
           let keyboard = []
 
+          let entry = []
           all.forEach(item => {
-            let entry = { text: item.name }
-            keyboard.push(entry)
+            if (!entry.length) entry = [{ text: item.name }]
+            if (entry.length === 3) {
+              keyboard.push(entry)
+              entry = []
+            }
+            else {
+              entry.push({ text: item.name })
+            }
           })
+
+          if (entry.length) keyboard.push(entry)
 
           var option = {
             "parse_mode": "Markdown",
