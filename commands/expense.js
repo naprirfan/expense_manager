@@ -28,10 +28,9 @@ module.exports = {
 
           let entry = []
           all.forEach(item => {
-            if (!entry.length) entry = [{ text: item.name }]
             if (entry.length === 3) {
               keyboard.push(entry)
-              entry = []
+              entry = [{ text: item.name }]
             }
             else {
               entry.push({ text: item.name })
