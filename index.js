@@ -32,17 +32,28 @@ bot.on('message', msg => {
     bot.sendMessage(msg.chat.id, helpCommand)
   }
   else if (msg.text.startsWith('/expense')) {
+
+    const textArr = msg.text.split(' ')
+    if (
+      textArr.length < 3 ||
+      textArr[0] !== '/expense' ||
+      !Number.isInteger(textArr[1])
+    ) {
+      const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /expense [harga] [nama_barang] tanpa tanda kurung`
+      return bot.sendMessage(msg.chat.id, errorMessage)
+    }
+
     var option = {
-            "parse_mode": "Markdown",
-            "reply_markup": {
-                "ReplyKeyboardMarkup": {
-                    "keyboard": [
-                        ['BCA'],
-                        ['Commbank']
-                    ]
-                }
-            }
-        };
+      "parse_mode": "Markdown",
+      "reply_markup": JSON.stringify({
+          "hide_keyboard": true,
+          "keyboard": [
+            [{ text: "Yes" }],
+            [{ text: "No" }]
+          ]
+      })
+    }
+
     bot.sendMessage(msg.chat.id, "processing expense...", option)
   }
   else if (msg.text.startsWith('/income')) {
