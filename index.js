@@ -10,6 +10,7 @@ const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
 // Commands
 const helpCommand = require('./commands/help')
+const expenseCommand = require('./commands/expense')
 
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -33,28 +34,13 @@ bot.on('message', msg => {
   }
   else if (msg.text.startsWith('/expense')) {
 
-    const textArr = msg.text.split(' ')
-    if (
-      textArr.length < 3 ||
-      textArr[0] !== '/expense' ||
-      !Number.isInteger(textArr[1])
-    ) {
-      const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /expense [harga] [nama_barang] tanpa tanda kurung`
-      return bot.sendMessage(msg.chat.id, errorMessage)
+    // Validate
+    if (expenseCommand.validate(msg.text)) {
+      return expenseCommand.process(msg, bot)
     }
 
-    var option = {
-      "parse_mode": "Markdown",
-      "reply_markup": JSON.stringify({
-          "hide_keyboard": true,
-          "keyboard": [
-            [{ text: "Yes" }],
-            [{ text: "No" }]
-          ]
-      })
-    }
-
-    bot.sendMessage(msg.chat.id, "processing expense...", option)
+    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /expense [harga] [nama_barang] tanpa tanda kurung`
+    return bot.sendMessage(msg.chat.id, errorMessage)
   }
   else if (msg.text.startsWith('/income')) {
     bot.sendMessage(msg.chat.id, "processing income...")
