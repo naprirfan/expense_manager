@@ -15,10 +15,11 @@ module.exports = {
     var option = {
       "parse_mode": "Markdown",
       "reply_markup": JSON.stringify({
-          "hide_keyboard": true,
+          "one_time_keyboard": true,
           "keyboard": [
-            [{ text: "Yes" }],
-            [{ text: "No" }]
+            [{ text: `${msg.text} - BCA` }],
+            [{ text: `${msg.text} - CommBank` }],
+            [{ text: `${msg.text} - Mandiri` }],
           ]
       })
     }
