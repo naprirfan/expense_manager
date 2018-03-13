@@ -42,9 +42,8 @@ module.exports = {
     }
     // Scenario 3: Command complete
     else {
-
+      return bot.sendMessage(msg.chat.id, "Data berhasil disimpan")
     }
 
-    return bot.sendMessage(msg.chat.id, "Data berhasil disimpan")
   }
 }
