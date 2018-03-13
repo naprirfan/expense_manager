@@ -60,8 +60,8 @@ db.serialize(function() {
     ("Mandiri"),
     ("BukaDompet"),
     ("Ethereum"),
-    ("Gojek A"),
-    ("Gojek B")
+    ("Gojek-Gopay A"),
+    ("Gojek-Gopay B")
   `
   db.run(`INSERT INTO account (name) VALUES ${values}`);
 
