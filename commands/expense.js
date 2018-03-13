@@ -1,5 +1,5 @@
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('database')
+const Database = require('better-sqlite3');
+const db = new Database('../database');
 
 module.exports = {
   validate: function(text) {
@@ -15,28 +15,23 @@ module.exports = {
   },
 
   process: function(msg, bot) {
+
+    // TODO: create context from session
     // Setup variables
     const textArr = msg.text.split('|')
-    var option = {
-      "parse_mode": "Markdown",
-      "reply_markup": JSON.stringify({
-          "one_time_keyboard": true,
-          "keyboard": []
-      })
-    }
 
     // Scenario 1: Haven't choose fund source
-    if (!textArr.length) {
-      let keyboard = []
+    if (textArr.length === 1) {
+      let row = db.prepare('SELECT * FROM account')
+      let option = {
+        "parse_mode": "Markdown",
+        "reply_markup": JSON.stringify({
+            "one_time_keyboard": true,
+            "keyboard": []
+        })
+      }
 
-      db.serialize(function() {
-        db.each("SELECT * FROM account", function(err, row) {
-          keyboard.push(row.name)
-        });
-      })
-
-      option.reply_markup.keyboard = keyboard
-      return bot.sendMessage(msg.chat.id, "Tolong pilih sumber dana", option)
+      return bot.sendMessage(msg.chat.id, JSON.stringify(row))
     }
     // Scenario 2: Chose fund source but haven't choose category
     else if (textArr.length === 2) {

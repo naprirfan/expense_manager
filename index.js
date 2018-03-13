@@ -1,5 +1,3 @@
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('database')
 const express = require('express')
 const app = express()
 const config = require('./config.js')

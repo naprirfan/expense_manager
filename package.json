@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/naprirfan/expense_manager#readme",
   "dependencies": {
+    "better-sqlite3": "^4.1.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "node-telegram-bot-api": "^0.30.0",
