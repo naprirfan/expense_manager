@@ -19,13 +19,6 @@ module.exports = {
     // TODO: create context from session
     // Setup variables
     const textArr = msg.text.split('|')
-    var option = {
-      "parse_mode": "Markdown",
-      "reply_markup": {
-          "one_time_keyboard": true,
-          "keyboard": []
-      }
-    }
 
     // Scenario 1: Haven't choose fund source
     if (textArr.length === 1) {
@@ -38,8 +31,13 @@ module.exports = {
             keyboard.push(entry)
           })
 
-          option.reply_markup.keyboard = keyboard
-          option.reply_markup = JSON.stringify(option.reply_markup)
+          var option = {
+            "parse_mode": "Markdown",
+            "reply_markup": JSON.stringify({
+                "one_time_keyboard": true,
+                "keyboard": keyboard
+            })
+          }
 
           return bot.sendMessage(msg.chat.id, 'Pilih Sumber Dana', option)
         });
