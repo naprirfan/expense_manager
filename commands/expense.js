@@ -21,17 +21,27 @@ module.exports = {
     const textArr = msg.text.split('|')
     var option = {
       "parse_mode": "Markdown",
-      "reply_markup": JSON.stringify({
+      "reply_markup": {
           "one_time_keyboard": true,
           "keyboard": []
-      })
+      }
     }
 
     // Scenario 1: Haven't choose fund source
     if (textArr.length === 1) {
       db.serialize(function() {
         db.all("SELECT * FROM account", function(err, all) {
-          return bot.sendMessage(msg.chat.id, JSON.stringify(all))
+          let keyboard = []
+
+          all.forEach(item => {
+            let entry = { text: item.name }
+            keyboard.push(entry)
+          })
+
+          option.reply_markup.keyboard = keyboard
+          option.reply_markup = JSON.stringify(option.reply_markup)
+
+          return bot.sendMessage(msg.chat.id, 'Pilih Sumber Dana', option)
         });
       })
 
