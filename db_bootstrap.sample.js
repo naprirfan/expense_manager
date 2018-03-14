@@ -107,6 +107,9 @@ db.serialize(function() {
     expense_category_id INTEGER NULL REFERENCES expense_category(id),
     income_category_id INTEGER NULL REFERENCES income_category(id),
     account_id INTEGER NOT NULL REFERENCES account(id),
+    expense_category_name TEXT,
+    income_category_name TEXT,
+    account_name TEXT,
     created_at DATETIME
   )`);
 
