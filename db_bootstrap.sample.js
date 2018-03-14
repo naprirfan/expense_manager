@@ -2,6 +2,10 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('database');
 
 db.serialize(function() {
+
+  /**
+  * Expense Category
+  */
   db.run(`DROP TABLE IF EXISTS expense_category`)
 
   db.run(`CREATE TABLE expense_category (
@@ -30,6 +34,9 @@ db.serialize(function() {
     console.log(row.id + ': ' + row.name);
   });
 
+  /**
+  * Income Category
+  */
   db.run(`DROP TABLE IF EXISTS income_category`)
 
   db.run(`CREATE TABLE income_category (
@@ -47,27 +54,50 @@ db.serialize(function() {
     console.log(row.id + ': ' + row.name);
   });
 
+  /**
+  * Account
+  */
   db.run(`DROP TABLE IF EXISTS account`)
 
   db.run(`CREATE TABLE account (
     id INTEGER PRIMARY KEY,
-    name TEXT
+    name TEXT,
+    display VARCHAR(3)
   )`);
 
   values = `
-    ("BCA"),
-    ("Commbank"),
-    ("Mandiri"),
-    ("BukaDompet"),
-    ("Ethereum"),
-    ("Gojek-Gopay A"),
-    ("Gojek-Gopay B")
+    ("BCA", 'yes'),
+    ("Commbank", 'yes'),
+    ("Mandiri", 'yes'),
+    ("BukaDompet", 'yes'),
+    ("Gojek-Gopay A", 'yes'),
+    ("Gojek-Gopay B", 'yes'),
+    ("Ethereum", 'no'),
+    ("Reksadana", 'no'),
+    ("Saham", 'no')
   `
-  db.run(`INSERT INTO account (name) VALUES ${values}`);
+  db.run(`INSERT INTO account (name, display) VALUES ${values}`);
 
   db.each("SELECT * FROM account", function(err, row) {
-    console.log(row.id + ': ' + row.name);
+    console.log(row.id + ': ' + row.name + '; ' + row.display);
   });
+
+  /**
+  * Context
+  */
+  db.run(`DROP TABLE IF EXISTS context`)
+
+  db.run(`CREATE TABLE context (
+    chat_id INTEGER PRIMARY KEY,
+    key TEXT,
+    value TEXT,
+    created_at DATETIME
+  )`);
+
+  /**
+  * Transactions
+  */
+  db.run(`DROP TABLE IF EXISTS transactions`)
 
   db.run(`DROP TABLE IF EXISTS transactions`)
 
