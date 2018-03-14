@@ -21,6 +21,12 @@ app.use(express.static('public'))
 
 app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Manager!'))
 
+app.get('/expense_manager/select/:table', (req, res) => {
+  db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
+    return res.json(row)
+  })
+})
+
 app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
