@@ -12,7 +12,7 @@ module.exports = {
         entry = [{ text: item.id + '-' + item.name }]
       }
       else {
-        entry.push({ text: item.id + '-' + item.name }]
+        entry.push({ text: item.id + '-' + item.name })
       }
     })
 
