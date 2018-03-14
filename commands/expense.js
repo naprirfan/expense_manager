@@ -28,6 +28,8 @@ module.exports = {
 
           let entry = []
           all.forEach(item => {
+            if (item.display !== 'yes') return
+
             if (entry.length === 3) {
               keyboard.push(entry)
               entry = [{ text: item.name }]
