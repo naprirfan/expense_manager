@@ -37,7 +37,7 @@ module.exports = {
   },
 
   deleteContext: function(chat_id, callback) {
-    updateContext(chat_id, '', '', callback)
+    this.updateContext(chat_id, '', '', callback)
   },
 
   updateContext: function(chat_id, key, val, callback) {

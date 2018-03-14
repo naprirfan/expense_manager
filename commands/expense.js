@@ -70,7 +70,7 @@ module.exports = {
       let expense_category_name = arr2[1]
 
       db.serialize(function() {
-        db.run(`INSERT INTO account
+        db.run(`INSERT INTO transactions
           (
             name,
             amount,
@@ -86,7 +86,7 @@ module.exports = {
             "${name}",
             ${amount},
             ${chat_id},
-            "${expense_category_name}",
+            "${expense_category_id}",
             ${account_id},
             "${expense_category_name}",
             "${account_name}",
@@ -95,7 +95,7 @@ module.exports = {
         `
         );
 
-        helper.deleteContext(() => return bot.sendMessage(chat_id, "Data berhasil disimpan"))
+        helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
       })
     }
 
