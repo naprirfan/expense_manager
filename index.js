@@ -27,13 +27,19 @@ app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) =>
 bot.on('message', msg => {
   // if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
 
-  // Declare input
-  let input = msg.text
-
   // Get context
+  db.run(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
+    if (row.key && (row.key === 'expense' || row.key === 'income')) {
+      processChat(bot, msg, row.value + '|' + msg.text)
+    }
+    else {
+      processChat(bot, msg, msg.text)
+    }
+  })
 
-  // If there's context, modify input and proceed
+});
 
+const processChat = function(bot, msg, input) {
   if (input === '/help' || input === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)
   }
@@ -53,7 +59,6 @@ bot.on('message', msg => {
   else {
     bot.sendMessage(msg.chat.id, JSON.stringify(msg))
   }
-
-});
+}
 
 app.listen(config.PORT, () => console.log(`Expense manager listening on port ${config.PORT}!`))

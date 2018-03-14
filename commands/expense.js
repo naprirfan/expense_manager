@@ -57,14 +57,18 @@ module.exports = {
             })
           }
 
-          return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
+          db.run(`UPDATE context SET key = 'expense', value = '${input}' WHERE chat_id = ${chat_id}`, (err, row) => {
+            if (err) return bot.sendMessage(chat_id, 'Error.. Silakan coba lagi')
+            return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
+          })
+
         });
       })
 
     }
     // Scenario 2: Chose fund source but haven't choose category
     else if (textArr.length === 2) {
-
+      return bot.sendMessage(chat_id, "Ini inputnya: " + input)
     }
     // Scenario 3: Command complete
     else {
