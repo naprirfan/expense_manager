@@ -1,5 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('database');
+var config = require('./config.js')
 
 db.serialize(function() {
 
@@ -89,10 +90,21 @@ db.serialize(function() {
 
   db.run(`CREATE TABLE context (
     chat_id INTEGER PRIMARY KEY,
-    key TEXT,
-    value TEXT,
+    key TEXT NULL,
+    value TEXT NULL,
     created_at DATETIME
   )`);
+
+  let contextArr = config.TELEGRAM_CHAT_IDS.map(item => {
+    return `(${item})`
+  })
+  values = contextArr.join(',')
+
+  db.run(`INSERT INTO context (chat_id) VALUES ${values}`);
+
+  db.each("SELECT * FROM context", function(err, row) {
+    console.log(row.chat_id);
+  });
 
   /**
   * Transactions
