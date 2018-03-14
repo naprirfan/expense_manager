@@ -1,4 +1,5 @@
 const sqlite3 = require('sqlite3').verbose()
+const helper = require('./_helper.js')
 const db = new sqlite3.Database('database')
 
 module.exports = {
@@ -23,39 +24,9 @@ module.exports = {
     if (textArr.length === 1) {
       db.serialize(function() {
         db.all("SELECT * FROM account", function(err, all) {
-          let keyboard = []
 
-          let entry = []
-          all.forEach(item => {
-            if (item.display !== 'yes') return
-
-            if (entry.length === 3) {
-              keyboard.push(entry)
-              entry = [{ text: item.name }]
-            }
-            else {
-              entry.push({ text: item.name })
-            }
-          })
-
-          // Add new account
-          const newFundSource = { text: 'Tambah sumber dana baru >>'}
-          if (entry.length === 3) {
-            keyboard.push(entry)
-            keyboard.push([newFundSource])
-          }
-          else {
-            entry.push(newFundSource)
-            keyboard.push(entry)
-          }
-
-          var option = {
-            "parse_mode": "Markdown",
-            "reply_markup": JSON.stringify({
-                "one_time_keyboard": true,
-                "keyboard": keyboard
-            })
-          }
+          let collection = all.filter(item => item.display === 'yes')
+          let option = helper.enrichKeyboard(collection, 'Tambah sumber dana baru >>')
 
           db.run(`UPDATE context SET key = 'expense', value = '${input}' WHERE chat_id = ${chat_id}`, (err, row) => {
             if (err) return bot.sendMessage(chat_id, 'Error.. Silakan coba lagi')
@@ -104,11 +75,10 @@ module.exports = {
 
           db.run(`UPDATE context SET key = 'expense', value = '${input}' WHERE chat_id = ${chat_id}`, (err, row) => {
             if (err) return bot.sendMessage(chat_id, 'Error.. Silakan coba lagi')
-            return bot.sendMessage(chat_id, 'Pilih Kategori Belanja Anda', option)
+            return bot.sendMessage(chat_id, 'Pilih Kategori Belanjamu', option)
           })
         })
       })
-      return bot.sendMessage(chat_id, "Ini inputnya: " + input)
     }
     // Scenario 3: Command complete
     else {
