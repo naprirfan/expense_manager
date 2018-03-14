@@ -16,7 +16,6 @@ module.exports = {
 
   process: function(msg, bot) {
 
-    // TODO: create context from session
     // Setup variables
     const textArr = msg.text.split('|')
 
@@ -39,7 +38,16 @@ module.exports = {
             }
           })
 
-          if (entry.length) keyboard.push(entry)
+          // Add new account
+          const newFundSource = { text: 'Tambah sumber dana baru >>'}
+          if (entry.length === 3) {
+            keyboard.push(entry)
+            keyboard.push([newFundSource])
+          }
+          else {
+            entry.push(newFundSource)
+            keyboard.push(entry)
+          }
 
           var option = {
             "parse_mode": "Markdown",
