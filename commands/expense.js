@@ -42,7 +42,7 @@ module.exports = {
       db.serialize(function() {
         db.all("SELECT * FROM expense_category", function(err, all) {
 
-          let option = helper.enrichKeyboard(collection, 'Tambah kategori baru >>')
+          let option = helper.enrichKeyboard(all, 'Tambah kategori baru >>')
 
           db.run(`UPDATE context SET key = 'expense', value = '${input}' WHERE chat_id = ${chat_id}`, (err, row) => {
             if (err) return bot.sendMessage(chat_id, 'Error.. Silakan coba lagi')
