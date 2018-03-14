@@ -31,7 +31,7 @@ bot.on('message', msg => {
 
   // Get context
   db.run(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
-    if (row.key && (row.key === 'expense' || row.key === 'income')) {
+    if (row && row.key && (row.key === 'expense' || row.key === 'income')) {
       processChat(bot, msg, row.value + '|' + msg.text)
     }
     else {
