@@ -1,3 +1,6 @@
+const sqlite3 = require('sqlite3').verbose()
+const db = new sqlite3.Database('database')
+
 module.exports = {
   enrichKeyboard: function(collection, additonal_text) {
     let keyboard = []
@@ -6,10 +9,10 @@ module.exports = {
     collection.forEach(item => {
       if (entry.length === 3) {
         keyboard.push(entry)
-        entry = [{ text: item.name }]
+        entry = [{ text: item.id + '-' + item.name }]
       }
       else {
-        entry.push({ text: item.name })
+        entry.push({ text: item.id + '-' + item.name }]
       }
     })
 
@@ -31,5 +34,16 @@ module.exports = {
           "keyboard": keyboard
       })
     }
-  }
+  },
+
+  deleteContext: function(chat_id, callback) {
+    updateContext(chat_id, '', '', callback)
+  },
+
+  updateContext: function(chat_id, key, val, callback) {
+    db.run(`UPDATE context SET key = '${key}', value = '${val}' WHERE chat_id = ${chat_id}`, (err, row) => {
+      if (err) throw "Error"
+      callback()
+    })
+  },
 }
