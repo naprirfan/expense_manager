@@ -30,7 +30,7 @@ bot.on('message', msg => {
   // if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
 
   // Get context
-  db.run(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
+  db.each(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
     if (row && row.key && (row.key === 'expense' || row.key === 'income')) {
       processChat(bot, msg, row.value + '|' + msg.text)
     }
