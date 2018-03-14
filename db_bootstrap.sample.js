@@ -116,7 +116,8 @@ db.serialize(function() {
   db.run(`CREATE TABLE transactions (
     id INTEGER PRIMARY KEY,
     name TEXT,
-    created_by TEXT,
+    amount INTEGER,
+    created_by INTEGER,
     expense_category_id INTEGER NULL REFERENCES expense_category(id),
     income_category_id INTEGER NULL REFERENCES income_category(id),
     account_id INTEGER NOT NULL REFERENCES account(id),

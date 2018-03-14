@@ -51,7 +51,52 @@ module.exports = {
     }
     // Scenario 3: Command complete
     else {
-      return bot.sendMessage(chat_id, "Data berhasil disimpan")
+
+      // Extract name & amount
+      let arr0 = textArr[0].split(' ')
+      let nameArr = []
+      for (let i = 2; i < arr0.length; i++) nameArr.push(arr0[i])
+      let name = nameArr.join(' ')
+      let amount = arr0[1]
+
+      // Extract account ID & name
+      let arr1 = textArr[1].split('-')
+      let account_id = arr1[0]
+      let account_name = arr1[1]
+
+      // Extract expense category ID & expense category name
+      let arr2 = textArr[2].split('-')
+      let expense_category_id = arr2[0]
+      let expense_category_name = arr2[1]
+
+      db.serialize(function() {
+        db.run(`INSERT INTO account
+          (
+            name,
+            amount,
+            created_by,
+            expense_category_id,
+            account_id,
+            expense_category_name,
+            account_name,
+            created_at
+          )
+          VALUES
+          (
+            "${name}",
+            ${amount},
+            ${chat_id},
+            "${expense_category_name}",
+            ${account_id},
+            "${expense_category_name}",
+            "${account_name}",
+            "${new Date()}"
+          )
+        `
+        );
+
+        helper.deleteContext(() => return bot.sendMessage(chat_id, "Data berhasil disimpan"))
+      })
     }
 
   }
