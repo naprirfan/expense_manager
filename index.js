@@ -27,20 +27,27 @@ app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) =>
 bot.on('message', msg => {
   // if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
 
-  if (msg.text === '/help' || msg.text === '/start') {
+  // Declare input
+  let input = msg.text
+
+  // Get context
+
+  // If there's context, modify input and proceed
+
+  if (input === '/help' || input === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)
   }
-  else if (msg.text.startsWith('/expense')) {
+  else if (input.startsWith('/expense')) {
 
     // Validate
-    if (expenseCommand.validate(msg.text)) {
-      return expenseCommand.process(msg, bot)
+    if (expenseCommand.validate(input)) {
+      return expenseCommand.process(msg.chat.id, input, bot)
     }
 
     const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /expense [harga] [nama_barang] tanpa tanda kurung`
     return bot.sendMessage(msg.chat.id, errorMessage)
   }
-  else if (msg.text.startsWith('/income')) {
+  else if (input.startsWith('/income')) {
     bot.sendMessage(msg.chat.id, "processing income...")
   }
   else {

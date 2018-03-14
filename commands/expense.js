@@ -14,10 +14,10 @@ module.exports = {
     return true
   },
 
-  process: function(msg, bot) {
+  process: function(chat_id, input, bot) {
 
     // Setup variables
-    const textArr = msg.text.split('|')
+    const textArr = input.split('|')
 
     // Scenario 1: Haven't choose fund source
     if (textArr.length === 1) {
@@ -57,7 +57,7 @@ module.exports = {
             })
           }
 
-          return bot.sendMessage(msg.chat.id, 'Pilih Sumber Dana', option)
+          return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
         });
       })
 
@@ -68,7 +68,7 @@ module.exports = {
     }
     // Scenario 3: Command complete
     else {
-      return bot.sendMessage(msg.chat.id, "Data berhasil disimpan")
+      return bot.sendMessage(chat_id, "Data berhasil disimpan")
     }
 
   }
