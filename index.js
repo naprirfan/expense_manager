@@ -39,7 +39,7 @@ app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) =>
 })
 
 bot.on('message', msg => {
-  // if (config.TELEGRAM_CHAT_ID.indexOf(msg.chat.id) < 0) return;
+  if (config.TELEGRAM_CHAT_IDS.indexOf(msg.chat.id) < 0) return;
 
   // Get context
   db.each(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
