@@ -95,7 +95,9 @@ module.exports = {
         `
         );
 
-        helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
+        db.run(`UPDATE account SET amount = amount - ${amount} WHERE id = ${account_id}`, (err, row) => {
+          helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
+        })
       })
     }
 
