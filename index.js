@@ -9,9 +9,14 @@ const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
 // Commands
+const availableContext = [
+  'expense',
+  'income',
+  'koreksi',
+]
 const helpCommand = require('./commands/help')
 const expenseCommand = require('./commands/expense')
-
+const koreksiCommand = require('./commands/koreksi')
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
@@ -37,7 +42,7 @@ bot.on('message', msg => {
 
   // Get context
   db.each(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
-    if (row && row.key && (row.key === 'expense' || row.key === 'income')) {
+    if (row && row.key && availableContext.indexOf(row.key) >= 0) {
       processChat(bot, msg, row.value + '|' + msg.text)
     }
     else {
@@ -50,6 +55,9 @@ bot.on('message', msg => {
 const processChat = function(bot, msg, input) {
   if (input === '/help' || input === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)
+  }
+  else if (input.startsWith('/koreksi')) {
+    return koreksiCommand.process(msg.chat.id, input, bot)
   }
   else if (input.startsWith('/expense')) {
 

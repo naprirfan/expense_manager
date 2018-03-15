@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose()
-const helper = require('./_helper.js')
 const db = new sqlite3.Database('database')
+const helper = require('./_helper.js')
 
 module.exports = {
   validate: function(text) {
