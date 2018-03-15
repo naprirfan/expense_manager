@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('database');
-var config = require('./config.js')
+var db = new sqlite3.Database('database/database');
+var config = require('../config.js')
 
 db.serialize(function() {
 

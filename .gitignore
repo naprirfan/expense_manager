@@ -1,4 +1,6 @@
 node_modules/
 config.js
-database
+database/database
+database/db_bootstrap.js
+database/migrations
 db_bootstrap.js

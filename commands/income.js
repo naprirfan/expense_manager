@@ -60,12 +60,12 @@ module.exports = {
       let amount = arr0[1]
 
       // Extract account ID & name
-      let arr1 = textArr[1].split('-')
+      let arr1 = textArr[1].split('~')
       let account_id = arr1[0]
       let account_name = arr1[1]
 
       // Extract income category ID & income category name
-      let arr2 = textArr[2].split('-')
+      let arr2 = textArr[2].split('~')
       let income_category_id = arr2[0]
       let income_category_name = arr2[1]
 

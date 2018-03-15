@@ -9,10 +9,10 @@ module.exports = {
     collection.forEach(item => {
       if (entry.length === 3) {
         keyboard.push(entry)
-        entry = [{ text: item.id + '-' + item.name }]
+        entry = [{ text: item.id + '~' + item.name }]
       }
       else {
-        entry.push({ text: item.id + '-' + item.name })
+        entry.push({ text: item.id + '~' + item.name })
       }
     })
 
