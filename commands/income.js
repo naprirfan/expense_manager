@@ -26,7 +26,7 @@ module.exports = {
         db.all("SELECT * FROM account", function(err, all) {
 
           let collection = all.filter(item => item.display === 'yes')
-          let option = helper.enrichKeyboard(collection, 'Tambah sumber dana baru >>')
+          let option = helper.enrichKeyboard(collection)
 
           helper.updateContext(chat_id, 'income', input, () => {
             return bot.sendMessage(chat_id, 'Pilih ke mana dana masuk', option)
@@ -41,7 +41,7 @@ module.exports = {
       db.serialize(function() {
         db.all("SELECT * FROM income_category", function(err, all) {
 
-          let option = helper.enrichKeyboard(all, 'Tambah kategori baru >>')
+          let option = helper.enrichKeyboard(all)
           helper.updateContext(chat_id, 'income', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Kategori Pemasukanmu', option)
           })

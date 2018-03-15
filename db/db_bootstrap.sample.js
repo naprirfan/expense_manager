@@ -118,8 +118,6 @@ db.serialize(function() {
   */
   db.run(`DROP TABLE IF EXISTS transactions`)
 
-  db.run(`DROP TABLE IF EXISTS transactions`)
-
   db.run(`CREATE TABLE transactions (
     id INTEGER PRIMARY KEY,
     name TEXT,
@@ -133,6 +131,23 @@ db.serialize(function() {
     account_name TEXT,
     created_at DATETIME
   )`);
+
+  /**
+  * Transfers
+  */
+  db.run(`DROP TABLE IF EXISTS transfers`)
+
+  db.run(`CREATE TABLE transfers (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    amount INTEGER,
+    from_account_id INTEGER,
+    to_account_id INTEGER,
+    from_account_name TEXT,
+    to_account_name TEXT,
+    created_at DATETIME
+  )`);
+
 
 });
 

@@ -17,15 +17,21 @@ module.exports = {
     })
 
     // Add new account
-    const additionalText = { text: additonal_text}
-    if (entry.length === 3) {
-      keyboard.push(entry)
-      keyboard.push([additionalText])
+    if (additonal_text) {
+      const additionalText = { text: additonal_text}
+      if (entry.length === 3) {
+        keyboard.push(entry)
+        keyboard.push([additionalText])
+      }
+      else {
+        entry.push(additionalText)
+        keyboard.push(entry)
+      }
     }
     else {
-      entry.push(additionalText)
       keyboard.push(entry)
     }
+
 
     return {
       "parse_mode": "Markdown",

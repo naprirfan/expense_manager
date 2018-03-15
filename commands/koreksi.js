@@ -13,7 +13,7 @@ module.exports = {
         db.all("SELECT * FROM account", function(err, all) {
 
           let collection = all.filter(item => item.display === 'yes')
-          let option = helper.enrichKeyboard(collection, 'Tambah sumber dana baru >>')
+          let option = helper.enrichKeyboard(collection)
 
           helper.updateContext(chat_id, 'expense', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
