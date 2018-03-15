@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
-// Commands
+// Context & Commands
 const availableContext = [
   'expense',
   'income',
@@ -17,6 +17,7 @@ const availableContext = [
 const helpCommand = require('./commands/help')
 const expenseCommand = require('./commands/expense')
 const koreksiCommand = require('./commands/koreksi')
+const incomeCommand = require('./commands/income')
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
@@ -60,7 +61,6 @@ const processChat = function(bot, msg, input) {
     return koreksiCommand.process(msg.chat.id, input, bot)
   }
   else if (input.startsWith('/expense')) {
-
     // Validate
     if (expenseCommand.validate(input)) {
       return expenseCommand.process(msg.chat.id, input, bot)
@@ -70,7 +70,13 @@ const processChat = function(bot, msg, input) {
     return bot.sendMessage(msg.chat.id, errorMessage)
   }
   else if (input.startsWith('/income')) {
-    bot.sendMessage(msg.chat.id, "processing income...")
+    // Validate
+    if (incomeCommand.validate(input)) {
+      return incomeCommand.process(msg.chat.id, input, bot)
+    }
+
+    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /income [harga] [nama_barang] tanpa tanda kurung`
+    return bot.sendMessage(msg.chat.id, errorMessage)
   }
   else {
     bot.sendMessage(msg.chat.id, JSON.stringify(msg))
