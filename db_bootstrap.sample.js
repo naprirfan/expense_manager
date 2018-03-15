@@ -26,6 +26,7 @@ db.serialize(function() {
     ("Cuci Mobil"),
     ("Cicilan Mobil"),
     ("Pulsa or Paket Data"),
+    ("Birokrasi"),
     ("Lain-lain")
   `
 
@@ -46,7 +47,8 @@ db.serialize(function() {
   )`);
 
   values = `
-    ("Gaji")
+    ("Gaji"),
+    ("Lain - lain")
   `
 
   db.run(`INSERT INTO income_category (name) VALUES ${values}`);
@@ -63,21 +65,26 @@ db.serialize(function() {
   db.run(`CREATE TABLE account (
     id INTEGER PRIMARY KEY,
     name TEXT,
-    display VARCHAR(3)
+    display VARCHAR(3),
+    amount INTEGER
   )`);
 
   values = `
-    ("BCA", 'yes'),
-    ("Commbank", 'yes'),
-    ("Mandiri", 'yes'),
-    ("BukaDompet", 'yes'),
-    ("Gojek-Gopay A", 'yes'),
-    ("Gojek-Gopay B", 'yes'),
-    ("Ethereum", 'no'),
-    ("Reksadana", 'no'),
-    ("Saham", 'no')
+    ("BCA", 'yes', 250000),
+    ("Commbank", 'yes', 20000000),
+    ("Mandiri", 'yes', 95000),
+    ("E-Toll", 'yes', 95000),
+    ("Credit Card", 'yes', 0),
+    ("BukaDompet", 'yes', 200000),
+    ("Cash A", 'yes', 1000000),
+    ("Cash B", 'yes', 200000),
+    ("Gojek-Gopay A", 'yes', 200000),
+    ("Gojek-Gopay B", 'yes', 200000),
+    ("Ethereum", 'no', 5000000),
+    ("Reksadana", 'no', 77000000),
+    ("Saham", 'no', 0)
   `
-  db.run(`INSERT INTO account (name, display) VALUES ${values}`);
+  db.run(`INSERT INTO account (name, display, amount) VALUES ${values}`);
 
   db.each("SELECT * FROM account", function(err, row) {
     console.log(row.id + ': ' + row.name + '; ' + row.display);
