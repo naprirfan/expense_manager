@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('../database/database')
+const db = new sqlite3.Database('db/database')
 const helper = require('./_helper.js')
 
 module.exports = {

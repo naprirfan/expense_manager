@@ -1,6 +1,5 @@
 node_modules/
 config.js
-database/database
-database/db_bootstrap.js
-database/migrations
-db_bootstrap.js
+db/database
+db/db_bootstrap.js
+db/migrations
