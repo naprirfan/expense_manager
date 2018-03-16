@@ -13,6 +13,7 @@ const availableContext = [
   'expense',
   'income',
   'koreksi',
+  'transfer',
 ]
 const helpCommand = require('./commands/help')
 const expenseCommand = require('./commands/expense')
