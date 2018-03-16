@@ -20,6 +20,7 @@ const expenseCommand = require('./commands/expense')
 const koreksiCommand = require('./commands/koreksi')
 const incomeCommand = require('./commands/income')
 const transferCommand = require('./commands/transfer')
+const queryCommand = require('./commands/query')
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
@@ -61,6 +62,15 @@ const processChat = function(bot, msg, input) {
   }
   else if (input.startsWith('/koreksi')) {
     return koreksiCommand.process(msg.chat.id, input, bot)
+  }
+  else if (input.startsWith('/query')) {
+    // Validate
+    if (queryCommand.validate(input)) {
+      return queryCommand.process(msg.chat.id, input, bot)
+    }
+
+    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /query [query] tanpa tanda kurung`
+    return bot.sendMessage(msg.chat.id, errorMessage)
   }
   else if (input.startsWith('/transfer')) {
     // Validate

@@ -79,10 +79,7 @@ db.serialize(function() {
     ("Cash A", 'yes', 1000000),
     ("Cash B", 'yes', 200000),
     ("Gojek-Gopay A", 'yes', 200000),
-    ("Gojek-Gopay B", 'yes', 200000),
-    ("Ethereum", 'no', 5000000),
-    ("Reksadana", 'no', 77000000),
-    ("Saham", 'no', 0)
+    ("Gojek-Gopay B", 'yes', 200000)
   `
   db.run(`INSERT INTO account (name, display, amount) VALUES ${values}`);
 
@@ -148,6 +145,28 @@ db.serialize(function() {
     created_at DATETIME
   )`);
 
+  /**
+  * Investment
+  */
+  db.run(`DROP TABLE IF EXISTS investment`)
+
+  db.run(`CREATE TABLE investment (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    amount INTEGER,
+    notes TEXT
+  )`);
+
+  values = `
+    ("Saham", 200000),
+    ("Reksadana", 200000),
+    ("Ethereum", 200000)
+  `
+  db.run(`INSERT INTO investment (name, amount) VALUES ${values}`);
+
+  db.each("SELECT * FROM investment", function(err, row) {
+    console.log(row.id + ': ' + row.name + '; ' + row.display);
+  });
 
 });
 
