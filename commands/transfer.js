@@ -29,7 +29,7 @@ module.exports = {
           let option = helper.enrichKeyboard(collection)
 
           helper.updateContext(chat_id, 'transfer', input, () => {
-            return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
+            return bot.sendMessage(chat_id, 'Pilih Sumber Dana ' + input, option)
           })
 
         });
