@@ -23,7 +23,7 @@ module.exports = {
     for (let i = 1; i < textArr.length; i++) queryArr.push(arr0[i])
     let query = queryArr.join(' ')
 
-    db.run(query, (err, row) {
+    db.run(query, (err, row) => {
       helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Query executed"))
     })
 
