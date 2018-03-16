@@ -15,7 +15,7 @@ module.exports = {
           let collection = all.filter(item => item.display === 'yes')
           let option = helper.enrichKeyboard(collection)
 
-          helper.updateContext(chat_id, 'expense', input, () => {
+          helper.updateContext(chat_id, 'koreksi', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
           })
 
@@ -25,7 +25,7 @@ module.exports = {
     }
     // Scenario 2: Chose fund source but haven't choose category
     else if (textArr.length === 2) {
-      helper.updateContext(chat_id, 'expense', input, () => {
+      helper.updateContext(chat_id, 'koreksi', input, () => {
         return bot.sendMessage(chat_id, 'Masukkan jumlah dana')
       })
     }
@@ -33,13 +33,12 @@ module.exports = {
     else {
 
       // Extract account ID & name
-      let arr1 = textArr[1].split('-')
+      let arr1 = textArr[1].split('~')
       let account_id = arr1[0]
-      let account_name = arr1[1]
 
       // Extract amount
       let amount = textArr[2]
-
+      
       db.serialize(function() {
         db.run(`UPDATE account SET amount = ${amount} WHERE id = ${account_id}`, (err, row) => {
           helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
