@@ -12,8 +12,7 @@ module.exports = {
       db.serialize(function() {
         db.all("SELECT * FROM account", function(err, all) {
 
-          let collection = all.filter(item => item.display === 'yes')
-          let option = helper.enrichKeyboard(collection)
+          let option = helper.enrichKeyboard(all)
 
           helper.updateContext(chat_id, 'koreksi', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
