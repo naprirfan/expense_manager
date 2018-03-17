@@ -22,6 +22,7 @@ const incomeCommand = require('./commands/income')
 const transferCommand = require('./commands/transfer')
 const queryCommand = require('./commands/query')
 const cancelCommand = require('./commands/cancel')
+const helper = require('./commands/_helper')
 
 // Express routes
 app.use(bodyParser.json()); // for parsing application/json
@@ -48,8 +49,14 @@ bot.on('message', msg => {
 
   // Get context
   db.each(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
-    if (row && row.key && availableContext.indexOf(row.key) >= 0) {
-      processChat(bot, msg, row.value + '|' + msg.text)
+    if (row && row.key && msg.text !== '/cancel' && availableContext.indexOf(row.key) >= 0) {
+      try {
+        processChat(bot, msg, row.value + '|' + msg.text)
+      }
+      catch(error) {
+        helper.deleteContext(msg.chat.id, () => bot.sendMessage(msg.chat.id, "Perintah dibatalkan"))
+      }
+
     }
     else {
       processChat(bot, msg, msg.text)
