@@ -37,7 +37,7 @@ app.get('/expense_manager/select/:table', (req, res) => {
   db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
     if (req.query.format) {
       let textArr = []
-      all.forEach(item => {
+      row.forEach(item => {
         for (let key in item) {
           textArr.push(`${key}: ${item[key]}`)
         }
