@@ -69,6 +69,9 @@ const processChat = function(bot, msg, input) {
   if (input === '/help' || input === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)
   }
+  else if (input.startsWith('/cancel')) {
+    return cancelCommand.process(msg.chat.id, input, bot)
+  }
   else if (input.startsWith('/koreksi')) {
     return koreksiCommand.process(msg.chat.id, input, bot)
   }
