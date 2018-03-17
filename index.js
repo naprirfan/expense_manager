@@ -21,7 +21,9 @@ const koreksiCommand = require('./commands/koreksi')
 const incomeCommand = require('./commands/income')
 const transferCommand = require('./commands/transfer')
 const queryCommand = require('./commands/query')
+const cancelCommand = require('./commands/cancel')
 
+// Express routes
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
   extended: true

@@ -29,7 +29,7 @@ module.exports = {
           let option = helper.enrichKeyboard(collection)
 
           helper.updateContext(chat_id, 'expense', input, () => {
-            return bot.sendMessage(chat_id, 'Pilih Sumber Dana', option)
+            return bot.sendMessage(chat_id, 'Pilih Sumber Dana. Klik /cancel untuk membatalkan', option)
           })
 
         });
@@ -43,7 +43,7 @@ module.exports = {
 
           let option = helper.enrichKeyboard(all)
           helper.updateContext(chat_id, 'expense', input, () => {
-            return bot.sendMessage(chat_id, 'Pilih Kategori Pengeluaranmu', option)
+            return bot.sendMessage(chat_id, 'Pilih Kategori Pengeluaranmu. Klik /cancel untuk membatalkan', option)
           })
 
         })
