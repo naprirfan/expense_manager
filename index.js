@@ -35,7 +35,20 @@ app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Man
 
 app.get('/expense_manager/select/:table', (req, res) => {
   db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
-    return res.json(row)
+    if (req.query.format) {
+      let textArr = []
+      all.forEach(item => {
+        for (let key in item) {
+          textArr.push(`${key}: ${item[key]}`)
+        }
+        textArr.push('------------')
+      })
+      let text = textArr.join("\n")
+      return res.end(text)
+    }
+    else {
+      return res.json(row)
+    }
   })
 })
 
