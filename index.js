@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('public'))
 
-app.get(`/expense_manager/generate_report`, (req, res) => {
+app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) => {
   ejs.renderFile('./views/report_template.ejs.html', {}, {}, function(err, str){
     const options = { format: 'Letter' };
     pdf.create(str, options).toFile(`./public/reports/report${new Date()}.pdf`, function(err, compiled) {
