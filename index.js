@@ -45,7 +45,7 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
       to: 'datesystem',
       from_display: '27 Agustus 2000',
       to_display: '26 September 2001',
-    }
+    },
     total_income: `Rp${income}`,
     total_expense: `Rp${expense}`,
     total_summary: total_summary,
