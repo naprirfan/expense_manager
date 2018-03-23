@@ -64,16 +64,24 @@
         font-size: 1.2em;
       }
 
+      .u-txt--bold {
+        font-weight: bold;
+      }
+
+      .u-mrgn-bottom--1 {
+        margin-bottom: 1cm !important;
+      }
+
     </style>
   </head>
   <body>
-    <header class="clearfix">
+    <header class="clearfix u-mrgn-bottom--1">
       <h1>Laporan Bulanan</h1>
       <div>Periode : <%= period %></div>
       <h3>Summary</h3>
       <div>Total Pemasukan: <%= total_income %></div>
       <div>Total Belanja: <%= total_expense %></div>
-      <div style="font-weight: bold">Laba/Rugi: <%= total_summary %></div>
+      <div class="u-txt--bold">Laba/Rugi: <%= total_summary %></div>
     </header>
     <main>
       <table>
