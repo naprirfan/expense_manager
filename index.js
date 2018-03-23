@@ -54,7 +54,7 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
 
   ejs.renderFile('./views/report_template.ejs.html', data, {}, function(err, str){
     const options = { format: 'Letter' }
-    const now = new Date()
+    const now = Math.floor(new Date() / 1000)
 
     pdf.create(str, options).toFile(`./reports/report${now}.pdf`, function(err, compiled) {
       if (err) return console.log(err)
