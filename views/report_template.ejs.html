@@ -77,63 +77,47 @@
   <body>
     <header class="clearfix u-mrgn-bottom--1">
       <h1>Laporan Bulanan</h1>
-      <div>Periode : <%= period %></div>
-      <h3>Summary</h3>
+      <div>Periode : <%= period.from - period.to %></div>
+      <h2>Summary</h2>
       <div>Total Pemasukan: <%= total_income %></div>
       <div>Total Belanja: <%= total_expense %></div>
       <div class="u-txt--bold">Laba/Rugi: <%= total_summary %></div>
     </header>
     <main>
+      <h2 class="u-mrgn-bottom--1">Histori Belanja</h2>
+      <h3>Makan di luar</h3>
       <table>
         <thead>
           <tr>
-            <th class="service">SERVICE</th>
-            <th class="desc">DESCRIPTION</th>
-            <th>PRICE</th>
-            <th>QTY</th>
+            <th class="service">Nama</th>
+            <th>Sumber dana</th>
             <th>TOTAL</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="service">Design</td>
-            <td class="desc">Creating a recognizable design solution based on the company's existing visual identity</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">26</td>
-            <td class="total">$1,040.00</td>
+            <td>Flip burger</td>
+            <td>BCA</td>
+            <td>Rp38,000</td>
           </tr>
           <tr>
-            <td class="service">Development</td>
-            <td class="desc">Developing a Content Management System-based Website</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">80</td>
-            <td class="total">$3,200.00</td>
+            <td>Flip burger</td>
+            <td>BCA</td>
+            <td>Rp38,000</td>
           </tr>
           <tr>
-            <td class="service">SEO</td>
-            <td class="desc">Optimize the site for search engines (SEO)</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">20</td>
-            <td class="total">$800.00</td>
+            <td>Flip burger</td>
+            <td>BCA</td>
+            <td>Rp38,000</td>
           </tr>
           <tr>
-            <td class="service">Training</td>
-            <td class="desc">Initial training sessions for staff responsible for uploading web content</td>
-            <td class="unit">$40.00</td>
-            <td class="qty">4</td>
-            <td class="total">$160.00</td>
-          </tr>
-          <tr>
-            <td colspan="4">SUBTOTAL</td>
-            <td class="total">$5,200.00</td>
-          </tr>
-          <tr>
-            <td colspan="4">TAX 25%</td>
-            <td class="total">$1,300.00</td>
+            <td>Flip burger</td>
+            <td>BCA</td>
+            <td>Rp38,000</td>
           </tr>
           <tr>
             <td colspan="4" class="grand total">GRAND TOTAL</td>
-            <td class="grand total">$6,500.00</td>
+            <td class="grand total">Rp6,500.00</td>
           </tr>
         </tbody>
       </table>
