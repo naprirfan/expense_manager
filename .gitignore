@@ -3,3 +3,5 @@ config.js
 db/database
 db/db_bootstrap.js
 db/migrations
+reports/
+.DS_Store

@@ -7,6 +7,8 @@ const telegramBaseUrl = config.TELEGRAM_API_BASE_URL + config.TELEGRAM_BOT_ID
 const bodyParser = require('body-parser')
 const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
+const pdf = require('html-pdf')
+const ejs = require('ejs')
 
 // Context & Commands
 const availableContext = [
@@ -30,6 +32,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(express.static('public'))
+
+app.get(`/expense_manager/generate_report`, (req, res) => {
+  ejs.renderFile('./views/report_template.ejs.html', {}, {}, function(err, str){
+    return res.end(str)
+  });
+})
 
 app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Manager!'))
 
