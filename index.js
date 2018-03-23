@@ -34,7 +34,19 @@ app.use(bodyParser.urlencoded({
 app.use(express.static('public'))
 
 app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) => {
-  ejs.renderFile('./views/report_template.ejs.html', {}, {}, function(err, str){
+
+  let income = 26000000
+  let expense = 18000000
+  let total_summary = income - expense >= 0 ? `+ Rp${income - expense}` : `- Rp${income - expense}`
+
+  const data = {
+    period: '27 Agustus 2000 - 26 September 2001',
+    total_income: `Rp${income}`,
+    total_expense: `Rp${expense}`,
+    total_summary: total_summary,
+  }
+
+  ejs.renderFile('./views/report_template.ejs.html', data, {}, function(err, str){
     const options = { format: 'Letter' };
     pdf.create(str, options).toFile(`./public/reports/report${new Date()}.pdf`, function(err, compiled) {
       if (err) return console.log(err);
