@@ -1,3 +1,15 @@
+/**
+ * Commands
+ */
+const helpCommand = require('../commands/help')
+const expenseCommand = require('../commands/expense')
+const koreksiCommand = require('../commands/koreksi')
+const incomeCommand = require('../commands/income')
+const transferCommand = require('../commands/transfer')
+const queryCommand = require('../commands/query')
+const cancelCommand = require('../commands/cancel')
+const commandHelper = require('../commands/_command_helper')
+
 module.exports = function(bot, msg, input) {
   if (input === '/help' || input === '/start') {
     bot.sendMessage(msg.chat.id, helpCommand)

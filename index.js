@@ -13,24 +13,12 @@ const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
  */
 const processChat = require('./helpers/process_chat')
 const createPDF = require('./helpers/create_pdf')
-
-/**
- * Commands
- */
 const availableContext = [
   'expense',
   'income',
   'koreksi',
   'transfer',
 ]
-const helpCommand = require('./commands/help')
-const expenseCommand = require('./commands/expense')
-const koreksiCommand = require('./commands/koreksi')
-const incomeCommand = require('./commands/income')
-const transferCommand = require('./commands/transfer')
-const queryCommand = require('./commands/query')
-const cancelCommand = require('./commands/cancel')
-const commandHelper = require('./commands/_command_helper')
 
 /**
  * Routes
@@ -63,7 +51,8 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
       }
     })
 
-    let total_summary = income - expense >= 0 ? `+ Rp${income - expense}` : `- Rp${income - expense}`
+    let diff = Math.abs(income - expense)
+    let total_summary = income - expense >= 0 ? `+ Rp${diff}` : `- Rp${diff}`
 
     const data = {
       period: {
