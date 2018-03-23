@@ -9,10 +9,15 @@ const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
 /**
+ * Controllers
+ */
+const reportCtrl = require('./controllers/report_controller')
+const tableCtrl = require('./controllers/table_controller')
+
+/**
  * Helpers
  */
 const processChat = require('./helpers/process_chat')
-const createPDF = require('./helpers/create_pdf')
 const availableContext = [
   'expense',
   'income',
@@ -29,66 +34,11 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(express.static('public'))
 
-app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) => {
-
-  const from_date = '2018-03-01'
-  const to_date = '2018-03-31'
-  const query = `SELECT * FROM transactions`
-
-  db.all(query, (req, rows) => {
-    console.log(rows)
-
-    let income = 0
-    let expense = 0
-    rows.forEach(row => {
-      // Expense
-      if (row.expense_category_id) {
-        expense += Number(row.amount)
-      }
-      // Income
-      else {
-        income += Number(row.amount)
-      }
-    })
-
-    let diff = Math.abs(income - expense)
-    let total_summary = income - expense >= 0 ? `+ Rp${diff}` : `- Rp${diff}`
-
-    const data = {
-      period: {
-        from_display: '27 Agustus 2000',
-        to_display: '26 September 2001',
-      },
-      total_income: `Rp${income}`,
-      total_expense: `Rp${expense}`,
-      total_summary: total_summary,
-    }
-
-    createPDF(res, data)
-  })
-
-})
-
 app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Manager!'))
 
-app.get('/expense_manager/select/:table', (req, res) => {
-  db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
-    if (req.query.format) {
-      let textArr = []
-      row.forEach(item => {
-        for (let key in item) {
-          textArr.push(`${key}: ${item[key]}`)
-        }
-        textArr.push('------------')
-      })
-      let text = textArr.join("\n")
-      return res.end(text)
-    }
-    else {
-      return res.json(row)
-    }
-  })
-})
+app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, reportCtrl.generate)
+
+app.get('/expense_manager/select/:table', tableCtrl.dump)
 
 app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) => {
   bot.processUpdate(req.body)
