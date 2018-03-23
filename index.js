@@ -9,6 +9,7 @@ const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 const pdf = require('html-pdf')
 const ejs = require('ejs')
+const qpdf = require('node-qpdf');
 
 // Context & Commands
 const availableContext = [
@@ -55,8 +56,18 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
     const options = { format: 'Letter' };
     pdf.create(str, options).toFile(`./reports/report${new Date()}.pdf`, function(err, compiled) {
       if (err) return console.log(err);
-      console.log(compiled)
-      return res.download(compiled.filename)
+
+      var options = {
+        keyLength: 128,
+        password: config.PDF_PASSWORD,
+        restrictions: {
+          print: 'low',
+          useAes: 'y'
+        }
+      }
+
+      qpdf.encrypt(compiled.filename, options, `${compiled.filename}_encrypted`);
+      return res.download(`${compiled.filename}_encrypted`)
     });
   });
 })
