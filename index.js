@@ -7,11 +7,16 @@ const telegramBaseUrl = config.TELEGRAM_API_BASE_URL + config.TELEGRAM_BOT_ID
 const bodyParser = require('body-parser')
 const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
-const pdf = require('html-pdf')
-const ejs = require('ejs')
-const exec = require('child_process').exec;
 
-// Context & Commands
+/**
+ * Helpers
+ */
+const processChat = require('./helpers/process_chat')
+const createPDF = require('./helpers/create_pdf')
+
+/**
+ * Commands
+ */
 const availableContext = [
   'expense',
   'income',
@@ -25,13 +30,15 @@ const incomeCommand = require('./commands/income')
 const transferCommand = require('./commands/transfer')
 const queryCommand = require('./commands/query')
 const cancelCommand = require('./commands/cancel')
-const helper = require('./commands/_helper')
+const command_helper = require('./commands/_command_helper')
 
-// Express routes
-app.use(bodyParser.json()); // for parsing application/json
+/**
+ * Routes
+ */
+app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({
   extended: true
-}));
+}))
 app.use(express.static('public'))
 
 app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) => {
@@ -52,24 +59,8 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
     total_summary: total_summary,
   }
 
-  ejs.renderFile('./views/report_template.ejs.html', data, {}, function(err, str){
-    const options = { format: 'Letter' }
-    const now = new Date()
+  createPDF(res, data)
 
-    pdf.create(str, options).toFile(`./reports/report${now}.pdf`, function(err, compiled) {
-      if (err) return console.log(err)
-
-      const cmd = `qpdf --encrypt ${config.PDF_PASSWORD} ${config.PDF_PASSWORD} 40 -- ${compiled.filename} ./reports/encrypted_report_${now}.pdf`
-      exec(cmd, function (err) {
-        if (err) {
-          return res.end('Error occured: ' + err)
-        }
-        else {
-          return res.download(`./reports/encrypted_report_${now}.pdf`)
-        }
-      });
-    });
-  });
 })
 
 app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Manager!'))
@@ -94,12 +85,12 @@ app.get('/expense_manager/select/:table', (req, res) => {
 })
 
 app.post(`/expense_manager/new_message_${config.TELEGRAM_BOT_ID}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
+  bot.processUpdate(req.body)
+  res.sendStatus(200)
 })
 
 bot.on('message', msg => {
-  if (config.TELEGRAM_CHAT_IDS.indexOf(msg.chat.id) < 0) return;
+  if (config.TELEGRAM_CHAT_IDS.indexOf(msg.chat.id) < 0) return
 
   // Get context
   db.each(`SELECT * FROM context WHERE chat_id = ${msg.chat.id}`, (err, row) => {
@@ -108,7 +99,7 @@ bot.on('message', msg => {
         processChat(bot, msg, row.value + '|' + msg.text)
       }
       catch(error) {
-        helper.deleteContext(msg.chat.id, () => bot.sendMessage(msg.chat.id, "Perintah dibatalkan"))
+        command_helper.deleteContext(msg.chat.id, () => bot.sendMessage(msg.chat.id, "Perintah dibatalkan"))
       }
 
     }
@@ -117,57 +108,6 @@ bot.on('message', msg => {
     }
   })
 
-});
-
-const processChat = function(bot, msg, input) {
-  if (input === '/help' || input === '/start') {
-    bot.sendMessage(msg.chat.id, helpCommand)
-  }
-  else if (input.startsWith('/cancel')) {
-    return cancelCommand.process(msg.chat.id, input, bot)
-  }
-  else if (input.startsWith('/koreksi')) {
-    return koreksiCommand.process(msg.chat.id, input, bot)
-  }
-  else if (input.startsWith('/query')) {
-    // Validate
-    if (queryCommand.validate(input)) {
-      return queryCommand.process(msg.chat.id, input, bot)
-    }
-
-    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /query [query] tanpa tanda kurung`
-    return bot.sendMessage(msg.chat.id, errorMessage)
-  }
-  else if (input.startsWith('/transfer')) {
-    // Validate
-    if (transferCommand.validate(input)) {
-      return transferCommand.process(msg.chat.id, input, bot)
-    }
-
-    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /transfer [jumlah] [keterangan] tanpa tanda kurung`
-    return bot.sendMessage(msg.chat.id, errorMessage)
-  }
-  else if (input.startsWith('/expense')) {
-    // Validate
-    if (expenseCommand.validate(input)) {
-      return expenseCommand.process(msg.chat.id, input, bot)
-    }
-
-    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /expense [harga] [nama_barang] tanpa tanda kurung`
-    return bot.sendMessage(msg.chat.id, errorMessage)
-  }
-  else if (input.startsWith('/income')) {
-    // Validate
-    if (incomeCommand.validate(input)) {
-      return incomeCommand.process(msg.chat.id, input, bot)
-    }
-
-    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /income [harga] [nama_barang] tanpa tanda kurung`
-    return bot.sendMessage(msg.chat.id, errorMessage)
-  }
-  else {
-    bot.sendMessage(msg.chat.id, JSON.stringify(msg))
-  }
-}
+})
 
 app.listen(config.PORT, () => console.log(`Expense manager listening on port ${config.PORT}!`))
