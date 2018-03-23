@@ -45,10 +45,10 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
 
   const from_date = '2018-03-01'
   const to_date = '2018-03-31'
-  const query = `SELECT * FROM transactions WHERE created_at BETWEEN "${from_date}" AND "${to_date}"`
+  const query = `SELECT * FROM transactions`
 
   db.all(query, (req, rows) => {
-
+    console.log(rows)
 
     let income = 0
     let expense = 0
