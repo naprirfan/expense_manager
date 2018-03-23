@@ -9,7 +9,7 @@ const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 const pdf = require('html-pdf')
 const ejs = require('ejs')
-const qpdf = require('node-qpdf');
+const exec = require('child_process').exec;
 
 // Context & Commands
 const availableContext = [
@@ -53,21 +53,21 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
   }
 
   ejs.renderFile('./views/report_template.ejs.html', data, {}, function(err, str){
-    const options = { format: 'Letter' };
-    pdf.create(str, options).toFile(`./reports/report${new Date()}.pdf`, function(err, compiled) {
-      if (err) return console.log(err);
+    const options = { format: 'Letter' }
+    const now = new Date()
 
-      var options = {
-        keyLength: 128,
-        password: config.PDF_PASSWORD,
-        restrictions: {
-          print: 'low',
-          useAes: 'y'
+    pdf.create(str, options).toFile(`./reports/report${now}.pdf`, function(err, compiled) {
+      if (err) return console.log(err)
+
+      const cmd = `qpdf --encrypt ${config.PDF_PASSWORD} ${config.PDF_PASSWORD} 40 -- ${compiled.filename} ./reports/encrypted_report_${now}.pdf`
+      exec(cmd, function (err) {
+        if (err) {
+          return res.end('Error occured: ' + err)
         }
-      }
-
-      qpdf.encrypt(compiled.filename, options, `${compiled.filename}_encrypted`);
-      return res.download(`${compiled.filename}_encrypted`)
+        else {
+          return res.end('PDF encrypted :)')
+        }
+      });
     });
   });
 })
