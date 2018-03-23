@@ -48,7 +48,7 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
 
   ejs.renderFile('./views/report_template.ejs.html', data, {}, function(err, str){
     const options = { format: 'Letter' };
-    pdf.create(str, options).toFile(`./public/reports/report${new Date()}.pdf`, function(err, compiled) {
+    pdf.create(str, options).toFile(`./reports/report${new Date()}.pdf`, function(err, compiled) {
       if (err) return console.log(err);
       console.log(compiled)
       return res.download(compiled.filename)
