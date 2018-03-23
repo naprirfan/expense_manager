@@ -1,3 +1,6 @@
+const sqlite3 = require('sqlite3').verbose()
+const db = new sqlite3.Database('db/database')
+
 const tableCtrl = {
   dump: (req, res) => {
     db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
