@@ -30,12 +30,12 @@ const incomeCommand = require('./commands/income')
 const transferCommand = require('./commands/transfer')
 const queryCommand = require('./commands/query')
 const cancelCommand = require('./commands/cancel')
-const command_helper = require('./commands/_command_helper')
+const commandHelper = require('./commands/_command_helper')
 
 /**
  * Routes
  */
-app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
@@ -43,23 +43,40 @@ app.use(express.static('public'))
 
 app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) => {
 
-  let income = 26000000
-  let expense = 18000000
-  let total_summary = income - expense >= 0 ? `+ Rp${income - expense}` : `- Rp${income - expense}`
+  const from_date = '2018-03-01'
+  const to_date = '2018-03-31'
+  const query = `SELECT * FROM transactions WHERE created_at BETWEEN "${from_date}" AND "${to_date}"`
 
-  const data = {
-    period: {
-      from: 'datesystem',
-      to: 'datesystem',
-      from_display: '27 Agustus 2000',
-      to_display: '26 September 2001',
-    },
-    total_income: `Rp${income}`,
-    total_expense: `Rp${expense}`,
-    total_summary: total_summary,
-  }
+  db.all(query, (req, rows) => {
 
-  createPDF(res, data)
+
+    let income = 0
+    let expense = 0
+    rows.forEach(row => {
+      // Expense
+      if (row.expense_category_id) {
+        expense += Number(row.amount)
+      }
+      // Income
+      else {
+        income += Number(row.amount)
+      }
+    })
+
+    let total_summary = income - expense >= 0 ? `+ Rp${income - expense}` : `- Rp${income - expense}`
+
+    const data = {
+      period: {
+        from_display: '27 Agustus 2000',
+        to_display: '26 September 2001',
+      },
+      total_income: `Rp${income}`,
+      total_expense: `Rp${expense}`,
+      total_summary: total_summary,
+    }
+
+    createPDF(res, data)
+  })
 
 })
 
@@ -99,7 +116,7 @@ bot.on('message', msg => {
         processChat(bot, msg, row.value + '|' + msg.text)
       }
       catch(error) {
-        command_helper.deleteContext(msg.chat.id, () => bot.sendMessage(msg.chat.id, "Perintah dibatalkan"))
+        commandHelper.deleteContext(msg.chat.id, () => bot.sendMessage(msg.chat.id, "Perintah dibatalkan"))
       }
 
     }
