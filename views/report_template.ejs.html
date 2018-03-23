@@ -83,48 +83,43 @@
       <div>Total Belanja: <%= total_expense %></div>
       <div class="u-txt--bold">Laba/Rugi: <%= total_summary %></div>
     </header>
+    <hr />
     <main>
       <h2 class="u-mrgn-bottom--1">Histori Belanja</h2>
-      <h3>Makan di luar</h3>
-      <table>
-        <thead>
-          <tr>
-            <th class="service">Nama</th>
-            <th>Sumber dana</th>
-            <th>TOTAL</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Flip burger</td>
-            <td>BCA</td>
-            <td>Rp38,000</td>
-          </tr>
-          <tr>
-            <td>Flip burger</td>
-            <td>BCA</td>
-            <td>Rp38,000</td>
-          </tr>
-          <tr>
-            <td>Flip burger</td>
-            <td>BCA</td>
-            <td>Rp38,000</td>
-          </tr>
-          <tr>
-            <td>Flip burger</td>
-            <td>BCA</td>
-            <td>Rp38,000</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grand total">Total Belanja Makan di Luar</td>
-            <td class="grand total">Rp6,500,000</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grand total">Persentase Belanja Makan di Luar</td>
-            <td class="grand total">28.12%</td>
-          </tr>
-        </tbody>
-      </table>
+      <% for (var i = 0; i < expense.length; i++) { %>
+        <% var arr = expense[i];%>
+        <h3><%= arr[0]['expense_category_name'] %></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama</th>
+              <th>Sumber dana</th>
+              <th>TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% var amount = 0 %>
+            <% for (var j = 0; j < arr.length; j++) { %>
+              <% amount += arr[j]['amount'] %>
+              <tr>
+                <td><%= arr[j]['created_at']</td>
+                <td><%= arr[j]['name']</td>
+                <td><%= arr[j]['account_name']</td>
+                <td><%= arr[j]['amount']</td>
+              </tr>
+            <% } %>
+            <tr>
+              <td colspan="2" class="grand total">Total Belanja Makan di Luar</td>
+              <td class="grand total"><%= amount %></td>
+            </tr>
+            <tr>
+              <td colspan="2" class="grand total">Persentase Belanja Makan di Luar</td>
+              <td class="grand total">28.12%</td>
+            </tr>
+          </tbody>
+        </table>
+      <% } %>
     </main>
   </body>
 </html>
