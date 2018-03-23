@@ -35,7 +35,11 @@ app.use(express.static('public'))
 
 app.get(`/expense_manager/generate_report`, (req, res) => {
   ejs.renderFile('./views/report_template.ejs.html', {}, {}, function(err, str){
-    return res.end(str)
+    const options = { format: 'Letter' };
+    pdf.create(html, options).toFile(`./reports/report${new Date()}.pdf`, function(err, res) {
+      if (err) return console.log(err);
+      return res.end('ok')
+    });
   });
 })
 
