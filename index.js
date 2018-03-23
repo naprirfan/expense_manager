@@ -65,7 +65,7 @@ app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, (req, res) 
           return res.end('Error occured: ' + err)
         }
         else {
-          return res.end('PDF encrypted :)')
+          return res.download(`./reports/encrypted_report_${now}.pdf`)
         }
       });
     });
