@@ -87,7 +87,7 @@
     <main>
       <h2 class="u-mrgn-bottom--1">Histori Belanja</h2>
       <% for (var i = 0; i < expense.length; i++) { %>
-        <% var arr = expense[i];%>
+        <% var arr = expense[i]; if (!arr.length) continue; %>
         <h3><%= arr[0]['expense_category_name'] %></h3>
         <table>
           <thead>
