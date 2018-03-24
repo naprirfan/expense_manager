@@ -1,4 +1,9 @@
-<% var thousandSeparator = require('helpers/thousand_separator') %>
+
+<% function thousandSeparator(x) { %>
+<%   var parts = x.toString().split("."); %>
+<%   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); %>
+<%   return parts.join("."); %>
+<% } %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -81,9 +86,9 @@
       <h1>Laporan Bulanan</h1>
       <div>Periode : <%= period.from_display %> - <%= period.to_display %></div>
       <h2>Summary</h2>
-      <div>Total Pemasukan: <%= total_income %></div>
-      <div>Total Belanja: <%= total_expense %></div>
-      <div class="u-txt--bold">Laba/Rugi: <%= total_income - total_expense %></div>
+      <div>Total Pemasukan: <%= thousandSeparator(total_income) %></div>
+      <div>Total Belanja: <%= thousandSeparator(total_expense) %></div>
+      <div class="u-txt--bold">Laba/Rugi: RpXX</div>
     </header>
     <hr />
     <main>
@@ -112,11 +117,11 @@
               </tr>
             <% } %>
             <tr>
-              <td colspan="2" class="grand total">Total Belanja Makan di Luar</td>
+              <td colspan="4" class="grand total">Total Belanja Makan di Luar</td>
               <td class="grand total"><%= amount %></td>
             </tr>
             <tr>
-              <td colspan="2" class="grand total">Persentase Belanja Makan di Luar</td>
+              <td colspan="4" class="grand total">Persentase Belanja Makan di Luar</td>
               <td class="grand total">28.12%</td>
             </tr>
           </tbody>
