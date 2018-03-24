@@ -117,11 +117,11 @@
             <% } %>
             <tr>
               <td colspan="2" class="grand total">Total Belanja <%= arr[0]['expense_category_name'] %></td>
-              <td><%= formatMoney(amount) %></td>
+              <td class="grand total"><%= formatMoney(amount) %></td>
             </tr>
             <tr>
-              <td colspan="2">Persentase Belanja <%= arr[0]['expense_category_name'] %></td>
-              <td><%= (amount * 100 / total_expense).toFixed(2) %>%</td>
+              <td colspan="2" class="grand total">Persentase Belanja <%= arr[0]['expense_category_name'] %></td>
+              <td class="grand total"><%= (amount * 100 / total_expense).toFixed(2) %>%</td>
             </tr>
           </tbody>
         </table>
