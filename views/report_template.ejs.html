@@ -1,8 +1,7 @@
-
-<% function thousandSeparator(x) { %>
+<% function formatMoney(x) { %>
 <%   var parts = x.toString().split("."); %>
 <%   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); %>
-<%   return parts.join("."); %>
+<%   return 'Rp' + parts.join("."); %>
 <% } %>
 
 <!DOCTYPE html>
@@ -86,8 +85,8 @@
       <h1>Laporan Bulanan</h1>
       <div>Periode : <%= period.from_display %> - <%= period.to_display %></div>
       <h2>Summary</h2>
-      <div>Total Pemasukan: <%= thousandSeparator(total_income) %></div>
-      <div>Total Belanja: <%= thousandSeparator(total_expense) %></div>
+      <div>Total Pemasukan: <%= formatMoney(total_income) %></div>
+      <div>Total Belanja: <%= formatMoney(total_expense) %></div>
       <div class="u-txt--bold">Laba/Rugi: RpXX</div>
     </header>
     <hr />
@@ -113,16 +112,16 @@
                 <td><%= arr[j]['created_at'] %></td>
                 <td><%= arr[j]['name'] %></td>
                 <td><%= arr[j]['account_name'] %></td>
-                <td><%= arr[j]['amount'] %></td>
+                <td><%= formatMoney(arr[j]['amount']) %></td>
               </tr>
             <% } %>
             <tr>
-              <td colspan="4" class="grand total">Total Belanja Makan di Luar</td>
-              <td class="grand total"><%= amount %></td>
+              <td colspan="2" class="grand total">Total Belanja <%= arr[0]['expense_category_name'] %></td>
+              <td><%= formatMoney(amount) %></td>
             </tr>
             <tr>
-              <td colspan="4" class="grand total">Persentase Belanja Makan di Luar</td>
-              <td class="grand total">28.12%</td>
+              <td colspan="2">Persentase Belanja <%= arr[0]['expense_category_name'] %></td>
+              <td><%= (amount * 100 / total_expense).toFixed(2) %>%</td>
             </tr>
           </tbody>
         </table>
