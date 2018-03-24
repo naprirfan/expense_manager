@@ -59,6 +59,9 @@ const reportCtrl = {
         }
       })
 
+      expenseParentArr.push(expenseArr)
+      incomeParentArr.push(incomeArr)
+
       const data = {
         period: {
           from_display: '27 Agustus 2000',
