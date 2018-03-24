@@ -1,7 +1,6 @@
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
 const createPDF = require('../helpers/create_pdf')
-const thousandSeparator = require('../helpers/thousand_separator')
 
 const reportCtrl = {
   generate: (req, res) => {
@@ -60,17 +59,13 @@ const reportCtrl = {
         }
       })
 
-      let diff = thousandSeparator(Math.abs(income - expense))
-      let total_summary = income - expense >= 0 ? `+ Rp${diff}` : `- Rp${diff}`
-
       const data = {
         period: {
           from_display: '27 Agustus 2000',
           to_display: '26 September 2001',
         },
-        total_income: `Rp${thousandSeparator(income)}`,
-        total_expense: `Rp${thousandSeparator(expense)}`,
-        total_summary: total_summary,
+        total_income: income,
+        total_expense: expense,
         expense: expenseParentArr,
         income: incomeParentArr,
       }

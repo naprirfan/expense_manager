@@ -1,3 +1,5 @@
+<% var thousandSeparator = require('helpers/thousand_separator') %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -81,7 +83,7 @@
       <h2>Summary</h2>
       <div>Total Pemasukan: <%= total_income %></div>
       <div>Total Belanja: <%= total_expense %></div>
-      <div class="u-txt--bold">Laba/Rugi: <%= total_summary %></div>
+      <div class="u-txt--bold">Laba/Rugi: <%= total_income - total_expense %></div>
     </header>
     <hr />
     <main>
