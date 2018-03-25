@@ -89,7 +89,14 @@
       <h2>Summary</h2>
       <div>Total Pendapatan: <%= formatMoney(total_income) %></div>
       <div>Total Belanja: <%= formatMoney(total_expense) %></div>
-      <div class="u-txt--bold">Laba/Rugi: <%= formatMoney(total_income - total_expense) %></div>
+      <div class="u-mrgn-bottom--1 u-txt--bold">Laba/Rugi: <%= formatMoney(total_income - total_expense) %></div>
+
+      <h2>Asset</h2>
+      <div>Base Value: 50yuta</div>
+      <div class="u-mrgn-bottom--1">Current Assets Value: 70yuta</div>
+
+      <h2>Harta Liquid</h2>
+      <div class="u-mrgn-bottom--1">Total: 38yuta</div>
     </header>
     <hr />
     <main>
@@ -165,6 +172,35 @@
           </tbody>
         </table>
       <% } %>
+
+      <hr />
+      <h2 class="u-mrgn-bottom--1">Daftar Asset</h2>
+
+      <hr />
+      <h2 class="u-mrgn-bottom--1">Daftar Harta Liquid</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% var amount = 0 %>
+          <% for (var i = 0; i < account.length; i++) { %>
+            <% amount += account[i]['amount'] %>
+            <tr>
+              <td><%= account[i]['name'] %></td>
+              <td><%= formatMoney(account[i]['amount']) %></td>
+            </tr>
+          <% } %>
+          <tr>
+            <td class="grand total">Total Harta Liquid</td>
+            <td class="grand total"><%= formatMoney(amount) %></td>
+          </tr>
+        </tbody>
+      </table>
     </main>
   </body>
 </html>

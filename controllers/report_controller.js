@@ -7,73 +7,77 @@ const reportCtrl = {
 
     const from_date = '2018-03-01'
     const to_date = '2018-03-31'
-    const query = `SELECT * FROM transactions ORDER BY expense_category_id ASC`
+    const transactionQuery = `SELECT * FROM transactions ORDER BY expense_category_id ASC`
+    const accountQuery = 'SELECT * FROM account'
 
-    db.all(query, (req, rows) => {
-      /**
-       * For counting total income and expense
-       */
-      let income = 0
-      let expense = 0
+    db.all(transactionQuery, (req, transactionRows) => {
+      db.all(accountQuery, (req, accountRows) => {
+        /**
+         * For counting total income and expense
+         */
+        let income = 0
+        let expense = 0
 
-      /**
-       * For grouping category of expense and income
-       */
-      let latestExpenseCategoryId = -1
-      let latestIncomeCategoryId = -1
+        /**
+         * For grouping category of expense and income
+         */
+        let latestExpenseCategoryId = -1
+        let latestIncomeCategoryId = -1
 
-      /**
-       * Array of array, each element shows grouped income/expense
-       */
-      let expenseParentArr = []
-      let incomeParentArr = []
+        /**
+         * Array of array, each element shows grouped income/expense
+         */
+        let expenseParentArr = []
+        let incomeParentArr = []
 
-      /**
-       * Array for holding rows
-       */
-      let expenseArr = []
-      let incomeArr = []
+        /**
+         * Array for holding transactionRows
+         */
+        let expenseArr = []
+        let incomeArr = []
 
-      rows.forEach(row => {
-        // Expense
-        if (row.expense_category_id) {
-          expense += Number(row.amount)
-          if (row.expense_category_id !== latestExpenseCategoryId) {
-            expenseParentArr.push(expenseArr)
-            expenseArr = []
-            latestExpenseCategoryId = row.expense_category_id
+        transactionRows.forEach(row => {
+          // Expense
+          if (row.expense_category_id) {
+            expense += Number(row.amount)
+            if (row.expense_category_id !== latestExpenseCategoryId) {
+              expenseParentArr.push(expenseArr)
+              expenseArr = []
+              latestExpenseCategoryId = row.expense_category_id
+            }
+
+            expenseArr.push(row)
           }
+          // Income
+          else {
+            income += Number(row.amount)
+            if (row.income_category_id !== latestIncomeCategoryId) {
+              incomeParentArr.push(incomeArr)
+              incomeArr = []
+              latestIncomeCategoryId = row.income_category_id
+            }
 
-          expenseArr.push(row)
-        }
-        // Income
-        else {
-          income += Number(row.amount)
-          if (row.income_category_id !== latestIncomeCategoryId) {
-            incomeParentArr.push(incomeArr)
-            incomeArr = []
-            latestIncomeCategoryId = row.income_category_id
+            incomeArr.push(row)
           }
+        })
 
-          incomeArr.push(row)
+        expenseParentArr.push(expenseArr)
+        incomeParentArr.push(incomeArr)
+
+        const data = {
+          period: {
+            from_display: '27 Agustus 2000',
+            to_display: '26 September 2001',
+          },
+          total_income: income,
+          total_expense: expense,
+          expense: expenseParentArr,
+          income: incomeParentArr,
+          account: accountRows,
         }
+
+        createPDF(res, data)
       })
-
-      expenseParentArr.push(expenseArr)
-      incomeParentArr.push(incomeArr)
-
-      const data = {
-        period: {
-          from_display: '27 Agustus 2000',
-          to_display: '26 September 2001',
-        },
-        total_income: income,
-        total_expense: expense,
-        expense: expenseParentArr,
-        income: incomeParentArr,
-      }
-
-      createPDF(res, data)
     })
 
   }
