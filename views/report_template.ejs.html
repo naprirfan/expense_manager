@@ -1,6 +1,6 @@
 <% function formatMoney(x) { %>
-<%   var sign = x < 0 ? '-' : ''
-<%   x = Math.abs(x)
+<%   var sign = x < 0 ? '-' : '' %>
+<%   x = Math.abs(x) %>
 <%   var parts = x.toString().split("."); %>
 <%   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); %>
 <%   return sign + 'Rp' + parts.join("."); %>
