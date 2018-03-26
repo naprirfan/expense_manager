@@ -125,11 +125,11 @@
               </tr>
             <% } %>
             <tr>
-              <td colspan="2" class="grand total">Total Pendapatan <%= arr[0]['income_category_name'] %></td>
+              <td colspan="3" class="grand total">Total Pendapatan <%= arr[0]['income_category_name'] %></td>
               <td class="grand total"><%= formatMoney(amount) %></td>
             </tr>
             <tr>
-              <td colspan="2" class="grand total">Persentase Pendapatan <%= arr[0]['income_category_name'] %></td>
+              <td colspan="3" class="grand total">Persentase Pendapatan <%= arr[0]['income_category_name'] %></td>
               <td class="grand total"><%= (amount * 100 / total_income).toFixed(2) %>%</td>
             </tr>
           </tbody>
@@ -162,11 +162,11 @@
               </tr>
             <% } %>
             <tr>
-              <td colspan="2" class="grand total">Total Belanja <%= arr[0]['expense_category_name'] %></td>
+              <td colspan="3" class="grand total">Total Belanja <%= arr[0]['expense_category_name'] %></td>
               <td class="grand total"><%= formatMoney(amount) %></td>
             </tr>
             <tr>
-              <td colspan="2" class="grand total">Persentase Belanja <%= arr[0]['expense_category_name'] %></td>
+              <td colspan="3" class="grand total">Persentase Belanja <%= arr[0]['expense_category_name'] %></td>
               <td class="grand total"><%= (amount * 100 / total_expense).toFixed(2) %>%</td>
             </tr>
           </tbody>
