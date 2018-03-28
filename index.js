@@ -13,6 +13,7 @@ const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
  */
 const reportCtrl = require('./controllers/report_controller')
 const tableCtrl = require('./controllers/table_controller')
+const notificationCtrl = require('./controllers/notification_controller')
 
 /**
  * Helpers
@@ -37,6 +38,8 @@ app.use(express.static('public'))
 app.get('/expense_manager', (req, res) => res.send('Hello World From Expense Manager!'))
 
 app.get(`/expense_manager/generate_report${config.TELEGRAM_BOT_ID}`, reportCtrl.generate)
+
+app.get(`/expense_manager/blast${config.TELEGRAM_BOT_ID}/:message`, notificationCtrl.blast)
 
 app.get('/expense_manager/select/:table', tableCtrl.dump)
 
