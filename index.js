@@ -24,6 +24,7 @@ const availableContext = [
   'income',
   'koreksi',
   'transfer',
+  'set_investment',
 ]
 
 /**
