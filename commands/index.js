@@ -1,14 +1,15 @@
 /**
  * Commands
  */
-const helpCommand = require('../commands/help')
-const expenseCommand = require('../commands/expense')
-const koreksiCommand = require('../commands/koreksi')
-const incomeCommand = require('../commands/income')
-const transferCommand = require('../commands/transfer')
-const queryCommand = require('../commands/query')
-const cancelCommand = require('../commands/cancel')
-const commandHelper = require('../commands/_command_helper')
+const helpCommand = require('./help')
+const expenseCommand = require('./expense')
+const koreksiCommand = require('./koreksi')
+const setInvestmentCommand = require('./set_investment')
+const incomeCommand = require('./income')
+const transferCommand = require('./transfer')
+const queryCommand = require('./query')
+const cancelCommand = require('./cancel')
+const commandHelper = require('./_command_helper')
 
 module.exports = function(bot, msg, input) {
   if (input === '/help' || input === '/start') {
@@ -19,6 +20,9 @@ module.exports = function(bot, msg, input) {
   }
   else if (input.startsWith('/koreksi')) {
     return koreksiCommand.process(msg.chat.id, input, bot)
+  }
+  else if (input.startsWith('/set_investment')) {
+    return setInvestmentCommand.process(msg.chat.id, input, bot)
   }
   else if (input.startsWith('/query')) {
     // Validate

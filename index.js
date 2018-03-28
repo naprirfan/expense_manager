@@ -18,7 +18,7 @@ const notificationCtrl = require('./controllers/notification_controller')
 /**
  * Helpers
  */
-const processChat = require('./helpers/process_chat')
+const processChat = require('./commands/index')
 const availableContext = [
   'expense',
   'income',

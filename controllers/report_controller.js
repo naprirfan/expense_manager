@@ -1,6 +1,9 @@
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
-const createPDF = require('../helpers/create_pdf')
+const pdf = require('html-pdf')
+const ejs = require('ejs')
+const exec = require('child_process').exec
+const config = require('../config.js')
 
 const reportCtrl = {
   generate: (req, res) => {
@@ -76,10 +79,31 @@ const reportCtrl = {
           account: accountRows,
         }
 
-        createPDF(res, data)
+        this.createPDF(res, data)
       })
     })
 
+  },
+
+  createPDF: (res, data) => {
+    ejs.renderFile('views/report_template.ejs.html', data, {}, function(err, str){
+      const options = { format: 'Letter' }
+      const now = Math.floor(new Date() / 1000)
+
+      pdf.create(str, options).toFile(`../reports/report${now}.pdf`, function(err, compiled) {
+        if (err) return console.log(err)
+
+        const cmd = `qpdf --encrypt ${config.PDF_PASSWORD} ${config.PDF_PASSWORD} 40 -- ${compiled.filename} ../reports/encrypted_report_${now}.pdf`
+        exec(cmd, function (err) {
+          if (err) {
+            return res.end('Error occured: ' + err)
+          }
+          else {
+            return res.download(`../reports/encrypted_report_${now}.pdf`)
+          }
+        })
+      })
+    })
   }
 }
 
