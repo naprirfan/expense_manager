@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
 const helper = require('./_command_helper.js')
 
-const investement_values = [
+const investment_values = [
   {
     id: 1,
     name: 'Base value',
@@ -38,7 +38,7 @@ module.exports = {
     }
     // Scenario 2: Chose investment type but hadn't chose current/base value
     else if (textArr.length === 2) {
-      let option = helper.enrichKeyboard(investement_values)
+      let option = helper.enrichKeyboard(investment_values)
 
       helper.updateContext(chat_id, 'set_investment', input, () => {
         return bot.sendMessage(chat_id, 'Pilih nilai yang akan diupdate. Klik /cancel untuk membatalkan', option)
@@ -60,7 +60,7 @@ module.exports = {
 
       // Extract which value to be updated
       arr = textArr[2].split('~')
-      let updated_value = investement_values.filter(item => item.id === arr[0])['value']
+      let updated_value = investment_values.filter(item => item.id === Number(arr[0]))[0]['value']
 
       // Extract amount
       let amount = Number(textArr[3])
