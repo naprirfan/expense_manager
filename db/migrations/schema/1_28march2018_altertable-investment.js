@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('../database');
+var db = new sqlite3.Database('./db/database');
 
 db.serialize(function() {
   /**
@@ -17,7 +17,7 @@ db.serialize(function() {
 
   db.run(`DROP TABLE IF EXISTS investment_log`)
 
-  db.run(`CREATE TABLE investment (
+  db.run(`CREATE TABLE investment_log (
     id INTEGER PRIMARY KEY,
     name TEXT,
     investment_id INTEGER,
