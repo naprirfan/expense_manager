@@ -3,7 +3,6 @@ const db = new sqlite3.Database('db/database')
 const express = require('express')
 const app = express()
 const config = require('./config.js')
-const telegramBaseUrl = config.TELEGRAM_API_BASE_URL + config.TELEGRAM_BOT_ID
 const bodyParser = require('body-parser')
 const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)

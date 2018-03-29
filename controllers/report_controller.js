@@ -4,6 +4,8 @@ const pdf = require('html-pdf')
 const ejs = require('ejs')
 const exec = require('child_process').exec
 const config = require('../config.js')
+const TelegramBot = require('node-telegram-bot-api')
+const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
 const reportCtrl = {
   generate: (req, res) => {
@@ -95,7 +97,13 @@ const reportCtrl = {
                   return res.end('Error occured: ' + err)
                 }
                 else {
-                  return res.download(`../reports/encrypted_report_${now}.pdf`)
+                  config.TELEGRAM_CHAT_IDS.forEach(chat_id => {
+                    bot.sendDocument(chat_id, `../reports/encrypted_report_${now}.pdf`)
+                  })
+
+                  setTimeout(() => {
+                    return res.end('sent')
+                  }, 3000)
                 }
               })
             })
@@ -107,9 +115,6 @@ const reportCtrl = {
 
   },
 
-  createPDF: (res, data) => {
-
-  }
 }
 
 module.exports = reportCtrl
