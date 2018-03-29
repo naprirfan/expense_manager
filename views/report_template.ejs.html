@@ -91,12 +91,22 @@
       <div>Total Belanja: <%= formatMoney(total_expense) %></div>
       <div class="u-mrgn-bottom--1 u-txt--bold">Laba/Rugi: <%= formatMoney(total_income - total_expense) %></div>
 
+      <% for (var i = 0; i < investment.length; i++) { %>
+        <% var row = investment[i]; %>
+        <% bv_amount += row['base_value'] %>
+        <% cv_amount += row['current_value'] %>
+      <% } %>
       <h2>Asset</h2>
-      <div>Base Value: 50yuta</div>
-      <div class="u-mrgn-bottom--1">Current Assets Value: 70yuta</div>
+      <div>Base Value: <%= formatMoney(bv_amount) %></div>
+      <div>Current Value: <%= formatMoney(cv_amount) %></div>
+      <div class="u-mrgn-bottom--1">Laba/rugi: <%= formatMoney(cv_amount - bv_amount) %></div>
 
+      <% liquidAsset = 0 %>
+      <% for (var i = 0; i < account.length; i++) { %>
+        <% liquidAsset += account[i]['amount'] %>
+      <% } %>
       <h2>Harta Liquid</h2>
-      <div class="u-mrgn-bottom--1">Total: 38yuta</div>
+      <div class="u-mrgn-bottom--1">Total: <%= formatMoney(liquidAsset) %></div>
     </header>
     <hr />
     <main>
@@ -175,6 +185,42 @@
 
       <hr />
       <h2 class="u-mrgn-bottom--1">Daftar Asset</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Base Value</th>
+            <th>Current Value</th>
+            <th>Laba/Rugi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% var bv_amount = 0; var cv_amount = 0; %>
+          <% for (var i = 0; i < investment.length; i++) { %>
+            <% var row = investment[i]; %>
+            <% bv_amount += row['base_value'] %>
+            <% cv_amount += row['current_value'] %>
+            <tr>
+              <td><%= row['name'] %></td>
+              <td><%= formatMoney(row['base_value']) %></td>
+              <td><%= formatMoney(row['current_value']) %></td>
+              <td><%= formatMoney(row['current_value'] - row['base_value']) %></td>
+            </tr>
+          <% } %>
+          <tr>
+            <td colspan="3" class="grand total">Total Base Value</td>
+            <td colspan="3" class="grand total"><%= formatMoney(bv_amount) %></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="grand total">Total Current Value</td>
+            <td colspan="3" class="grand total"><%= formatMoney(cv_amount) %></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="grand total">Laba/Rugi</td>
+            <td colspan="3" class="grand total"><%= formatMoney(cv_amount - bv_amount) %></td>
+          </tr>
+        </tbody>
+      </table>
 
       <hr />
       <h2 class="u-mrgn-bottom--1">Daftar Harta Liquid</h2>
