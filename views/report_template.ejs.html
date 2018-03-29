@@ -87,10 +87,11 @@
       <h1>Laporan Bulanan</h1>
       <div>Periode : <%= period.from_display %> - <%= period.to_display %></div>
       <h2>Summary</h2>
-      <div>Total Pendapatan: <%= formatMoney(total_income) %></div>
-      <div>Total Belanja: <%= formatMoney(total_expense) %></div>
-      <div class="u-mrgn-bottom--1 u-txt--bold">Laba/Rugi: <%= formatMoney(total_income - total_expense) %></div>
-
+      <div>Total pendapatan bulan ini: <%= formatMoney(total_income) %></div>
+      <div>Total belanja bulan ini: <%= formatMoney(total_expense) %></div>
+      <div class="u-mrgn-bottom--1 u-txt--bold">Laba/Rugi bulan ini: <%= formatMoney(total_income - total_expense) %></div>
+        
+      <% var bv_amount = 0; var cv_amount = 0; %>
       <% for (var i = 0; i < investment.length; i++) { %>
         <% var row = investment[i]; %>
         <% bv_amount += row['base_value'] %>
@@ -99,14 +100,14 @@
       <h2>Asset</h2>
       <div>Base Value: <%= formatMoney(bv_amount) %></div>
       <div>Current Value: <%= formatMoney(cv_amount) %></div>
-      <div class="u-mrgn-bottom--1">Laba/rugi: <%= formatMoney(cv_amount - bv_amount) %></div>
+      <div class="u-txt--bold u-mrgn-bottom--1">Laba/rugi: <%= formatMoney(cv_amount - bv_amount) %></div>
 
       <% liquidAsset = 0 %>
       <% for (var i = 0; i < account.length; i++) { %>
         <% liquidAsset += account[i]['amount'] %>
       <% } %>
       <h2>Harta Liquid</h2>
-      <div class="u-mrgn-bottom--1">Total: <%= formatMoney(liquidAsset) %></div>
+      <div class="u-txt--bold u-mrgn-bottom--1">Total: <%= formatMoney(liquidAsset) %></div>
     </header>
     <hr />
     <main>
