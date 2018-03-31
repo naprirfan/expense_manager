@@ -2,9 +2,21 @@ const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
 const helper = require('./_command_helper.js')
 
+const confirmation_values = [
+  {
+    id: 1,
+    name: 'YES',
+  },
+  {
+    id: 2,
+    name: 'NO',
+  }
+]
+
 module.exports = {
   validate: function(text) {
     const textArr = text.split(' ')
+    console.log(text)
     if (
       textArr.length < 2 ||
       textArr[0] !== '/void' ||
@@ -42,15 +54,13 @@ module.exports = {
               Income category name: ${all[0]['income_category_name']}
               Created at: ${all[0]['created_at']}
 
-              Ketik "Y" untuk melanjutkan proses void.
-
-              Klik /cancel untuk membatalkan`, option)
+              Apakah kamu ingin melanjutkan?`, helper.enrichKeyboard(confirmation_values))
           })
 
         });
       })
     }
-    // Scenario 3: Command complete
+    // Scenario 2: Command complete
     else {
 
       // Extract trxId
@@ -58,9 +68,11 @@ module.exports = {
       let trxId = arr0[1]
 
       // Extract confirmation
-      let confirmation = textArr[1].toLowerCase()
+      let arr1 = textArr[1].split('~')
+      let confirmation = arr1[1].toLowerCase()
 
-      if (confirmation !== 'y') {
+
+      if (confirmation !== 'yes') {
         return helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Perintah dibatalkan"))
       }
 
