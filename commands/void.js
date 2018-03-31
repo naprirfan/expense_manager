@@ -16,11 +16,9 @@ const confirmation_values = [
 module.exports = {
   validate: function(text) {
     const textArr = text.split(' ')
-    console.log(text)
     if (
       textArr.length < 2 ||
-      textArr[0] !== '/void' ||
-      !textArr[1].match(/^-{0,1}\d+$/)
+      textArr[0] !== '/void'
     ) {
       return false
     }
