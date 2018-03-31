@@ -73,8 +73,8 @@ const reportCtrl = {
 
           const data = {
             period: {
-              from_display: '27 Agustus 2000',
-              to_display: '26 September 2001',
+              from_display: '01 March 2018',
+              to_display: '31 March 2018',
             },
             total_income: income,
             total_expense: expense,
