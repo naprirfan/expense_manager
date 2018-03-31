@@ -18,13 +18,7 @@ const notificationCtrl = require('./controllers/notification_controller')
  * Helpers
  */
 const processChat = require('./commands/index')
-const availableContext = [
-  'expense',
-  'income',
-  'koreksi',
-  'transfer',
-  'set_investment',
-]
+const availableContext = require('./commands/_available_context')
 
 /**
  * Routes

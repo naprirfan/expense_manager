@@ -9,6 +9,7 @@ const incomeCommand = require('./income')
 const transferCommand = require('./transfer')
 const queryCommand = require('./query')
 const cancelCommand = require('./cancel')
+const voidCommand = require('./void')
 const commandHelper = require('./_command_helper')
 
 module.exports = function(bot, msg, input) {
@@ -23,6 +24,15 @@ module.exports = function(bot, msg, input) {
   }
   else if (input.startsWith('/set_investment')) {
     return setInvestmentCommand.process(msg.chat.id, input, bot)
+  }
+  else if (input.startsWith('/void')) {
+    // Validate
+    if (voidCommand.validate(input)) {
+      return voidCommand.process(msg.chat.id, input, bot)
+    }
+
+    const errorMessage = `Format salah. Pastikan perintah mengikuti format sebagai berikut: /void [transaction_id] tanpa tanda kurung`
+    return bot.sendMessage(msg.chat.id, errorMessage)
   }
   else if (input.startsWith('/query')) {
     // Validate
