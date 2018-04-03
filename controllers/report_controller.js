@@ -15,7 +15,7 @@ const reportCtrl = {
     fromDate.setMonth(fromDate.getMonth() - 1)
 
     let toDate = new Date()
-    let toDate = setDate(1)
+    toDate.setDate(1)
 
     const transactionQuery = `SELECT * FROM transactions WHERE created_at BETWEEN '${functionHelper.formatDate(fromDate)}' AND '${functionHelper.formatDate(toDate)}'`
     const accountQuery = 'SELECT * FROM account'
