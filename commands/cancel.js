@@ -1,4 +1,4 @@
-const helper = require('./_helper.js')
+const helper = require('./_command_helper.js')
 
 module.exports = {
   process: function(chat_id, input, bot) {

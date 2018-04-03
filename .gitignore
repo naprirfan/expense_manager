@@ -1,5 +1,8 @@
 node_modules/
 config.js
 db/database
+db/database.copy
 db/db_bootstrap.js
-db/migrations
+db/migrations/seed/
+reports/
+.DS_Store

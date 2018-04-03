@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
-const helper = require('./_helper.js')
+const commandHelper = require('./_command_helper')
+const functionHelper = require('../helper')
 
 module.exports = {
   validate: function(text) {
@@ -26,9 +27,9 @@ module.exports = {
         db.all("SELECT * FROM account", function(err, all) {
 
           let collection = all.filter(item => item.display === 'yes')
-          let option = helper.enrichKeyboard(collection)
+          let option = commandHelper.enrichKeyboard(collection)
 
-          helper.updateContext(chat_id, 'expense', input, () => {
+          commandHelper.updateContext(chat_id, 'expense', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Sumber Dana. Klik /cancel untuk membatalkan', option)
           })
 
@@ -41,8 +42,8 @@ module.exports = {
       db.serialize(function() {
         db.all("SELECT * FROM expense_category", function(err, all) {
 
-          let option = helper.enrichKeyboard(all)
-          helper.updateContext(chat_id, 'expense', input, () => {
+          let option = commandHelper.enrichKeyboard(all)
+          commandHelper.updateContext(chat_id, 'expense', input, () => {
             return bot.sendMessage(chat_id, 'Pilih Kategori Pengeluaranmu. Klik /cancel untuk membatalkan', option)
           })
 
@@ -90,13 +91,13 @@ module.exports = {
             ${account_id},
             "${expense_category_name}",
             "${account_name}",
-            "${new Date()}"
+            "${functionHelper.formatDate(new Date())}"
           )
         `
         );
 
         db.run(`UPDATE account SET amount = amount - ${amount} WHERE id = ${account_id}`, (err, row) => {
-          helper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
+          commandHelper.deleteContext(chat_id, () => bot.sendMessage(chat_id, "Data berhasil disimpan"))
         })
       })
     }
