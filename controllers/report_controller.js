@@ -3,16 +3,21 @@ const db = new sqlite3.Database('db/database')
 const pdf = require('html-pdf')
 const ejs = require('ejs')
 const exec = require('child_process').exec
-const config = require('../config.js')
+const config = require('../config')
+const functionHelper = require('../helper')
 const TelegramBot = require('node-telegram-bot-api')
 const bot = new TelegramBot(config.TELEGRAM_BOT_ID)
 
 const reportCtrl = {
   generate: (req, res) => {
+    let fromDate = new Date()
+    fromDate.setDate(1)
+    fromDate.setMonth(fromDate.getMonth() - 1)
 
-    const from_date = '2018-03-01'
-    const to_date = '2018-03-31'
-    const transactionQuery = `SELECT * FROM transactions ORDER BY expense_category_id ASC`
+    let toDate = new Date()
+    let toDate = setDate(1)
+
+    const transactionQuery = `SELECT * FROM transactions WHERE created_at BETWEEN '${functionHelper.formatDate(fromDate)}' AND '${functionHelper.formatDate(toDate)}'`
     const accountQuery = 'SELECT * FROM account'
     const investmentQuery = 'SELECT * FROM investment'
 
@@ -96,6 +101,9 @@ const reportCtrl = {
                 if (err) {
                   return res.end('Error occured: ' + err)
                 }
+                else if (config.ENV !== 'PRODUCTION') {
+                  return res.download(`../reports/encrypted_report_${now}.pdf`)
+                }
                 else {
                   config.TELEGRAM_CHAT_IDS.forEach(chat_id => {
                     bot.sendDocument(chat_id, `../reports/encrypted_report_${now}.pdf`)
@@ -105,6 +113,8 @@ const reportCtrl = {
                     return res.end('sent')
                   }, 3000)
                 }
+
+
               })
             })
           })
