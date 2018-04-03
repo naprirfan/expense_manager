@@ -17,7 +17,9 @@ const reportCtrl = {
     let toDate = new Date()
     toDate.setDate(1)
 
-    const transactionQuery = `SELECT * FROM transactions WHERE created_at BETWEEN '${functionHelper.formatDate(fromDate)}' AND '${functionHelper.formatDate(toDate)}'`
+    const transactionQuery = `SELECT * FROM transactions 
+      WHERE created_at BETWEEN '${functionHelper.formatDate(fromDate)}' AND '${functionHelper.formatDate(toDate)}'
+      ORDER BY expense_category_id ASC`
     const accountQuery = 'SELECT * FROM account'
     const investmentQuery = 'SELECT * FROM investment'
 
@@ -78,8 +80,8 @@ const reportCtrl = {
 
           const data = {
             period: {
-              from_display: functionHelper.formatDate(fromDate, true),
-              to_display: functionHelper.formatDate(toDate, true),
+              from_display: functionHelper.getPrettyFormat(fromDate),
+              to_display: functionHelper.getPrettyFormat(toDate),
             },
             total_income: income,
             total_expense: expense,

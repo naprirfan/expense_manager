@@ -1,8 +1,6 @@
 module.exports = {
   // For sqlite format
   formatDate: (date, is_pretty) => {
-    if (is_pretty) return this.getPrettyFormat(date)
-
     let d = new Date(date)
     let month = '' + (d.getMonth() + 1)
     let day = '' + d.getDate()
@@ -22,7 +20,7 @@ module.exports = {
 
   // For pretty display
   getPrettyFormat: (date) => {
-    let d = new Date()
+    let d = new Date(date)
     const months = [
       'Januari',
       'Februari',
