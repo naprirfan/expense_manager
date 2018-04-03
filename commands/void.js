@@ -52,7 +52,7 @@ module.exports = {
               Income category name: ${all[0]['income_category_name']}
               Created at: ${all[0]['created_at']}
 
-              Apakah kamu ingin melanjutkan?`, helper.enrichKeyboard(confirmation_values))
+              Apakah kamu ingin menghapus transaksi ini?`, helper.enrichKeyboard(confirmation_values))
           })
 
         });

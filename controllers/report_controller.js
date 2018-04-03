@@ -78,8 +78,8 @@ const reportCtrl = {
 
           const data = {
             period: {
-              from_display: '01 March 2018',
-              to_display: '31 March 2018',
+              from_display: functionHelper.formatDate(fromDate, true),
+              to_display: functionHelper.formatDate(toDate, true),
             },
             total_income: income,
             total_expense: expense,
