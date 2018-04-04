@@ -11,6 +11,11 @@ const notificationCtrl = {
         bot.sendMessage(adminId, message)
       })
     }
+    
+    setTimeout(() => {
+      return res.end('sent')
+    }, 3000)
+
 
   }
 }
