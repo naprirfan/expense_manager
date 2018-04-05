@@ -43,5 +43,13 @@ module.exports = {
     if (day.length < 2) day = '0' + day;
 
     return [day, month, year].join('-')
+  },
+
+  formatMoney: (x) => {
+    const sign = x < 0 ? '-' : ''
+    x = Math.abs(x)
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return sign + 'Rp' + parts.join(".");
   }
 }

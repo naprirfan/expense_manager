@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database('db/database')
-const helper = require('./_command_helper.js')
+const commandHelper = require('./_command_helper.js')
+const functionHelper = require('../helper')
 
 module.exports = {
   process: function(chat_id, input, bot) {
@@ -12,15 +13,14 @@ module.exports = {
       // Build message
       let msgArr = []
       rows.forEach(row => {
-        let msg = `Name: ${row.name}
-Amount: ${row.amount}
-        `
-        msgArr.push(msg)
+        let msg = [`Name: ${row.name}`]
+        msg.push(`Amount: ${functionHelper.formatMoney(row.amount)}`)
+        msgArr.push(msg.join("\n"))
       })
 
       let message = msgArr.join("\n")
 
-      helper.deleteContext(chat_id, () => {
+      commandHelper.deleteContext(chat_id, () => {
         bot.sendMessage(chat_id, message)
       })
     })
