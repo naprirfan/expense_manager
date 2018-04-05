@@ -18,7 +18,7 @@ module.exports = {
         msgArr.push(msg.join("\n"))
       })
 
-      let message = msgArr.join("\n")
+      let message = msgArr.join("\n\n")
 
       commandHelper.deleteContext(chat_id, () => {
         bot.sendMessage(chat_id, message)
