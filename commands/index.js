@@ -10,6 +10,7 @@ const transferCommand = require('./transfer')
 const queryCommand = require('./query')
 const cancelCommand = require('./cancel')
 const voidCommand = require('./void')
+const liquidAssetCommand = require('./liquid_asset')
 const commandHelper = require('./_command_helper')
 
 module.exports = function(bot, msg, input) {
@@ -21,6 +22,9 @@ module.exports = function(bot, msg, input) {
   }
   else if (input.startsWith('/koreksi')) {
     return koreksiCommand.process(msg.chat.id, input, bot)
+  }
+  else if (input.startsWith('/list_harta')) {
+    return liquidAssetCommand.process(msg.chat.id, input, bot)
   }
   else if (input.startsWith('/set_investment')) {
     return setInvestmentCommand.process(msg.chat.id, input, bot)

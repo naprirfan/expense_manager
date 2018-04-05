@@ -20,4 +20,6 @@ Contoh: /transfer 10000000 tarik ATM BCA
 
 /void [transaction_id] = Menghapus transaksi dengan ID tertentu
 Contoh: /void 123
+
+/list_harta = Melihat daftar harta
 `
