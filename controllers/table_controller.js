@@ -3,7 +3,7 @@ const db = new sqlite3.Database('db/database')
 
 const tableCtrl = {
   dump: (req, res) => {
-    db.all(`SELECT * FROM ${req.params.table}`, (err, row) => {
+    db.all(`SELECT * FROM ${req.params.table} ORDER BY id DESC LIMIT 50`, (err, row) => {
       if (req.query.format) {
         let textArr = []
         row.forEach(item => {
