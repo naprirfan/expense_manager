@@ -22,4 +22,6 @@ Contoh: /transfer 10000000 tarik ATM BCA
 Contoh: /void 123
 
 /list_harta = Melihat daftar harta
+
+/tail = Melihat 10 transaksi terakhir
 `
