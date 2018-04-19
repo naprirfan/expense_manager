@@ -14,6 +14,7 @@ module.exports = {
       let msgArr = []
       rows.forEach(row => {
         let msg = []
+        msg.push(`ID: ${row.id}`)
         msg.push(`Name: ${row.name}`)
         msg.push(`Amount: ${functionHelper.formatMoney(row.amount)}`)
 
